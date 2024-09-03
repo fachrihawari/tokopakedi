@@ -16,16 +16,9 @@ const items: CarouselItem[] = [
   { id: 4, imageUrl: '/img/promo/shopaton.webp', alt: 'Carousel Image 4' },
 ];
 
-const circleClassNames = [
-  'w-3 h-3',
-  'w-2.5 h-2.5',
-  'w-2 h-2',
-  'w-1.5 h-1.5',
-]
-
 const nextPrevClassNames = 'absolute top-1/2 transform -translate-y-1/2 bg-white bg-opacity-50 hover:bg-opacity-75 rounded-full p-2 focus:outline-none'
 
-const Carousel: React.FC = () => {
+function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -57,13 +50,13 @@ const Carousel: React.FC = () => {
       </div>
 
       {/* Carousel Indicator */}
-      <div className="absolute left-4 bottom-4 flex items-center space-x-2">
+      <div className="absolute bottom-2 flex items-center space-x-2 left-1/2 transform -translate-x-1/2">
         {items.map((_, index) => {
           const activeClassName = index === currentIndex ? '' : 'bg-opacity-50';
           return (
             <button
               key={index}
-              className={`${circleClassNames[index]} rounded-full focus:outline-none bg-white ${activeClassName}`}
+              className={`w-4 h-1 rounded-full focus:outline-none bg-white ${activeClassName}`}
               onClick={() => setCurrentIndex(index)}
             />
           )

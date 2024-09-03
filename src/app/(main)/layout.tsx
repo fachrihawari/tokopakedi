@@ -1,5 +1,5 @@
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/home/Footer";
+import Footer from "@/components/Footer";
 
 export default function RootLayout({ children }: Readonly<Props>) {
   return (

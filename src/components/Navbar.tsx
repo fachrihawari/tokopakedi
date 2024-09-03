@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { FiSearch, FiShoppingCart, FiBell, FiMail, FiUser } from 'react-icons/fi';
+import { FiSearch, FiShoppingCart, FiUser } from 'react-icons/fi';
 
-const Navbar = () => {
+function Navbar () {
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3">

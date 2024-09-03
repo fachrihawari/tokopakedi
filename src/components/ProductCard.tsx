@@ -1,32 +1,32 @@
 import Image from "next/image";
 
-export interface FlashSaleProduct {
+export interface Product {
   id: number;
   name: string;
-  imageUrl: string;
+  thumbnail: string;
   price: number;
-  discountPercentage: number;
+  discount: number;
 }
 
 interface ProductCardProps {
-  product: FlashSaleProduct;
+  product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
   return (
     <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-      <Image src={product.imageUrl} alt={product.name} width={200} height={200} className="w-full h-48 object-cover" />
+      <Image src={product.thumbnail} alt={product.name} width={200} height={200} className="w-full h-48 object-cover" />
       <div className="p-4 gap-2">
         <h3 className="text-base text-gray-800 truncate">{product.name}</h3>
         <p className="font-bold text-green-500">
-          Rp {Math.round(product.price * (1 - product.discountPercentage / 100)).toLocaleString()}
+          Rp {Math.round(product.price * (1 - product.discount / 100)).toLocaleString()}
         </p>
         <div className="flex text-xs items-center">
           <span className="text-sm text-gray-500 line-through">
             Rp {product.price.toLocaleString()}
           </span>
           <span className="text-red-500 text-xs font-bold px-2 py-1 rounded">
-            {product.discountPercentage}%
+            {product.discount}%
           </span>
         </div>
       </div>
