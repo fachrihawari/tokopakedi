@@ -5,10 +5,12 @@ import ProductCard, { Product } from './ProductCard';
 interface SectionProductsProps {
   label: string;
   backgroundColor?: string;
-  products: Product[];
+  getProducts: () => Promise<Product[]>;
 }
 
-function SectionProducts({ label, backgroundColor = 'bg-white', products }: SectionProductsProps) {
+async function SectionProducts({ label, backgroundColor = 'bg-white', getProducts }: SectionProductsProps) {
+  const products = await getProducts();
+
   return (
     <section className={`${backgroundColor} py-8`}>
       <div className="container mx-auto px-4">
