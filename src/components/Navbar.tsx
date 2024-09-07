@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FiSearch, FiShoppingCart, FiUser } from 'react-icons/fi';
 
-function Navbar () {
+function Navbar() {
   return (
     <nav className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-3">
@@ -12,8 +12,8 @@ function Navbar () {
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 mx-4 sm:mx-8 md:mx-16">
-            <div className="relative">
+          <div className="hidden sm:flex sm:flex-1 mx-4 sm:mx-8 md:mx-16">
+            <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Cari di Tokopedia"
@@ -25,6 +25,9 @@ function Navbar () {
 
           {/* Navigation Icons */}
           <div className="flex items-center space-x-6">
+            <Link  href="/products" className="sm:hidden text-gray-600 hover:text-green-500">
+              <FiSearch size={24} />
+            </Link>
             <Link href="/cart" className="text-gray-600 hover:text-green-500">
               <FiShoppingCart size={24} />
             </Link>
