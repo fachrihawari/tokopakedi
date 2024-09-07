@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
-import ProductCard, { Product } from './ProductCard';
+import ProductCard from './ProductCard';
+import { Product } from '@/db/product_collection';
 
 interface SectionProductsProps {
   label: string;
@@ -23,7 +24,7 @@ async function SectionProducts({ label, backgroundColor = 'bg-white', getProduct
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product._id.toString()} product={product} />
           ))}
         </div>
       </div>
