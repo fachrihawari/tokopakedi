@@ -1,16 +1,34 @@
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
-import { FiSearch, FiShoppingCart, FiUser } from 'react-icons/fi';
+'use client'
 
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
 
 function Navbar() {
-  const handleSearch = async (formData: FormData) => {
-    'use server'
-    const query = formData.get('q')
-    redirect(`/products?q=${query}`)
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    setSearch(searchParams.get('q') ?? '')
+  }, [searchParams])
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.set('q', search)
+    router.push(`/products?${newSearchParams.toString()}`)
   }
+
+  const handleClearSearch = () => {
+    const newSearchParams = new URLSearchParams(searchParams)
+    newSearchParams.delete('q')
+    router.push(`/products?${newSearchParams.toString()}`)
+  }
+
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="sticky top-0 left-0 right-0 z-50 shadow-md backdrop-filter backdrop-blur-3xl">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -20,17 +38,21 @@ function Navbar() {
 
           {/* Search Bar */}
           <div className="hidden sm:flex sm:flex-1 mx-4 sm:mx-8 md:mx-16">
-            <form
-              action={handleSearch} className="relative w-full">
+            <form onSubmit={handleSearch} className="relative w-full">
+              <FiSearch size={20} className='absolute left-3 top-2.5 text-gray-400' />
               <input
                 type="text"
                 name='q'
-                placeholder="Cari di Tokopedia"
-                className="w-full py-2 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
+                placeholder="Cari di TokoPakEdi"
+                className="w-full py-2 pl-10 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
-              <button type='submit' className="absolute right-3 top-2.5 text-gray-400">
-                <FiSearch size={20} />
-              </button>
+              {search && (
+                <button type='button' onClick={handleClearSearch}>
+                  <FiX size={20} className='absolute right-3 top-2.5 text-gray-400' />
+                </button>
+              )}
             </form>
           </div>
 

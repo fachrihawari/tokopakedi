@@ -1,8 +1,9 @@
+import Link from "next/link";
 import { IoMdStar } from "react-icons/io";
 
 export default function ProductsFilter() {
   return (
-    <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4" >
+    <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-20 self-start">
       <div className="bg-white p-4 rounded-lg shadow">
         <h2 className="text-lg font-semibold mb-4">Filter</h2>
         <form>
@@ -37,6 +38,9 @@ export default function ProductsFilter() {
           <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 text-sm font-medium">
             Terapkan Filter
           </button>
+          <Link href="/products" className="mt-2 w-full text-green-500 bg-white py-2 px-4 rounded border border-green-500 text-sm font-medium">
+            Reset Filter
+          </Link>
         </form>
       </div>
     </div>
