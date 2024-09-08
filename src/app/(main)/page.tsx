@@ -4,7 +4,7 @@ import { getLatest, getBestSellers } from "@/actions/products";
 import { Suspense } from "react";
 import SectionProductsPlaceholder from "@/components/SectionProductsPlaceholder";
 
-export default async function Home() {
+export default async function HomePage() {
   return (
     <>
       <Carousel />

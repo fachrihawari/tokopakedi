@@ -1,5 +1,6 @@
 import type { Product } from "@/db/product_collection";
 import Image from "next/image";
+import { IoMdStar } from "react-icons/io";
 
 interface ProductCardProps {
   product: Product;
@@ -9,30 +10,28 @@ function ProductCard({ product }: ProductCardProps) {
 
   const priceElement = product.discount ? (
     <>
-      <p className="font-bold text-green-600">
-        Rp {Math.round(product.price * (1 - product.discount / 100)).toLocaleString()}
-      </p>
-      <div className="flex text-xs items-center">
-        <span className="text-sm text-gray-600 line-through">
-          Rp {product.price.toLocaleString()}
-        </span>
-        <span className="text-red-600 text-xs font-bold px-2 py-1 rounded">
-          {product.discount}%
-        </span>
+      <div className="flex items-center mb-1">
+        <p className="text-green-600 font-bold text-base mr-2">Rp99.000</p>
+        <span className="bg-red-100 text-red-800 text-xs font-semibold px-2 py-1 rounded">-23%</span>
       </div>
+      <p className="text-gray-600 text-xs line-through mb-1">Rp129.000</p>
     </>
   ) : (
-    <p className="font-bold text-gray-600">
-      Rp {product.price.toLocaleString()}
-    </p>
+    <p className="text-gray-600 font-bold text-base mb-1">Rp129.000</p>
   )
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <Image src={product.thumbnail} alt={product.name} width={200} height={200} className="w-full h-48 object-cover" />
-      <div className="p-4 gap-2">
-        <h3 className="text-base text-gray-800 truncate">{product.name}</h3>
+    <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-300">
+      <Image src={product.thumbnail} alt={product.name} width={200} height={200} className="w-full h-40 object-cover" />
+      <div className="p-3">
+        <h3 className="text-sm font-medium mb-1 truncate">{product.name}</h3>
         {priceElement}
+        <div className="flex items-center mb-2 text-xs text-gray-600">
+          <IoMdStar size={18} className="text-yellow-500 mr-1" />
+          <span>4.5</span>
+          <span className="mx-1">|</span>
+          <span>Terjual 1rb+</span>
+        </div>
       </div>
     </div>
   )

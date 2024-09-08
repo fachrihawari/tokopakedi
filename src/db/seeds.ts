@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import slug from 'slug'
 import { Product, productsCollection } from "@/db/product_collection";
 
-const TOTAL_PRODUCTS = 1_000 * 1;
+const TOTAL_PRODUCTS = 1_000 * 1_000;
 
 async function seed() {
   console.log("Seeding products...");
