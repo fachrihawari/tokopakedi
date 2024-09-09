@@ -18,12 +18,14 @@ function Navbar() {
     e.preventDefault()
     const newSearchParams = new URLSearchParams(searchParams)
     newSearchParams.set('q', search)
+    newSearchParams.set('page', '1')
     router.push(`/products?${newSearchParams.toString()}`)
   }
 
   const handleClearSearch = () => {
     const newSearchParams = new URLSearchParams(searchParams)
     newSearchParams.delete('q')
+    newSearchParams.set('page', '1')
     router.push(`/products?${newSearchParams.toString()}`)
   }
 

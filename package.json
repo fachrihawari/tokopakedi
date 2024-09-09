@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "bun run src/db/migrate.ts",
+    "seed": "bun run src/db/seeds.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.0",

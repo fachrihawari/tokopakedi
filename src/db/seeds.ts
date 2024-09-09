@@ -2,11 +2,11 @@ import { faker } from "@faker-js/faker";
 import slug from 'slug'
 import { Product, productsCollection } from "@/db/product_collection";
 
-const TOTAL_PRODUCTS = 1_000 * 1_000;
+const BASE_PRODUCTS = 1_000
+const TOTAL_PRODUCTS = BASE_PRODUCTS * process.env.TOTAL_PRODUCTS;
 
 async function seed() {
   console.log("Seeding products...");
-  await productsCollection.drop();
 
   let products: Product[] = [];
   for (let i = 1; i <= TOTAL_PRODUCTS; i++) {
@@ -31,12 +31,18 @@ async function seed() {
         faker.commerce.productAdjective(),
         faker.commerce.productAdjective(),
         faker.commerce.productAdjective(),
-      ]
+      ],
+      sales: faker.number.int({ min: 0, max: 1_000_000 }),
+      createdAt: faker.date.between({ from: new Date(2022, 0, 1), to: new Date() }),
+      rating: {
+        count: faker.number.int({ min: 0, max: 1000 }),
+        value: faker.number.float({ min: 1, max: 5, fractionDigits: 1 }),
+      }
     }
     products.push(newProduct);
     console.log(`${i}. Product ${newProduct.name} seeded successfully`);
 
-    if ((i % 1000) === 0) {
+    if ((i % BASE_PRODUCTS) === 0) {
       await productsCollection.insertMany(products);
       console.log("Products inserted successfully");
       products = [];
@@ -44,7 +50,9 @@ async function seed() {
   }
 
   console.log("Products seeded successfully");
-  process.exit(0);
 }
 
-seed();
+seed().catch(console.error).finally(() => {
+  console.log("Seeding done");
+  process.exit(0);
+});
