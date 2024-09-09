@@ -26,7 +26,7 @@ export default async function ProductsFilter({ searchParams }: ProductsFilterPro
                 categories.map((category) => (
                   <label key={category._id} className="flex items-center justify-between gap-4 text-sm">
                     <div className="flex items-center">
-                      <input type="checkbox" className="mr-2 w-6 h-6" value={category._id} />
+                      <input type="checkbox" className="mr-2 w-4 h-4" value={category._id} />
                       <span>{category._id}</span>
                     </div>
                     <span className="bg-gray-200 text-gray-700 text-center min-w-6 px-2 py-1 rounded-full text-xs font-medium">
@@ -59,7 +59,7 @@ export default async function ProductsFilter({ searchParams }: ProductsFilterPro
             <div className="space-y-2">
               {[5, 4, 3].map((rating) => (
                 <label key={rating} className="flex items-center text-sm">
-                  <input type="radio" name="rating" className="mr-2 w-6 h-6" />
+                  <input type="radio" name="rating" className="mr-2 w-4 h-4" />
                   <IoMdStar size={18} className="text-yellow-500 mr-1" />
                   {rating}  {rating < 5 && 'ke atas'}
                 </label>
