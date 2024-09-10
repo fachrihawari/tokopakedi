@@ -1,79 +1,135 @@
-import { getProductsFacets } from "@/actions/products";
+"use client"
+
+import { getProductsFacets, GetProductsFacetsResponse } from "@/actions/products";
 import { formatCurrency, formatCompactNumber } from "@/utils/number";
-import { headers } from "next/headers";
-import Link from "next/link";
+import { setQueryParams } from "@/utils/url";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { IoMdStar } from "react-icons/io";
 
-type ProductsFilterProps = {
-  searchParams: {
-    q: string
-  }
-}
-export default async function ProductsFilter({ searchParams }: ProductsFilterProps) {
-  const { priceRanges, categories } = await getProductsFacets(searchParams);
+export default function ProductsFilter() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [facets, setFacets] = useState<GetProductsFacetsResponse>({ priceRanges: [], categories: [] });
+
+  useEffect(() => {
+    const fetchFacets = async () => {
+      const result = await getProductsFacets(Object.fromEntries(searchParams.entries()));
+      setFacets(result);
+    };
+    fetchFacets();
+  }, [searchParams]);
+
+  const handleFilter = (key: string, value: string) => {
+    const newSearchParams = setQueryParams(searchParams, { [key]: value, page: '1' });
+    router.push(`/products?${newSearchParams.toString()}`);
+  };
+
+  const handleCategoryChange = (category: string, isChecked: boolean) => {
+    const currentCategories = searchParams.getAll('categories');
+    let newCategories;
+    if (isChecked) {
+      newCategories = [...currentCategories, category];
+    } else {
+      newCategories = currentCategories.filter(c => c !== category);
+    }
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete('categories');
+    newCategories.forEach(c => newSearchParams.append('categories', c));
+    newSearchParams.set('page', '1');
+    router.push(`/products?${newSearchParams.toString()}`);
+  };
+
   return (
     <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-20 self-start">
       <h2 className="text-lg font-bold mb-2">Filter</h2>
       <div className="bg-white p-4 rounded-lg shadow">
-        <form>
+        {facets.categories.length > 0 && (
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
             <div className="space-y-2">
-              {
-                categories.map((category) => (
-                  <label key={category._id} className="flex items-center justify-between gap-4 text-sm">
-                    <div className="flex items-center">
-                      <input type="checkbox" className="mr-2 w-4 h-4" value={category._id} />
-                      <span>{category._id}</span>
-                    </div>
-                    <span className="bg-gray-200 text-gray-700 text-center min-w-6 px-2 py-1 rounded-full text-xs font-medium">
-                      {formatCompactNumber(category.count)}
-                    </span>
-                  </label>
-                ))
-              }
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Rentang Harga</label>
-            <div className="flex flex-col space-y-2">
-              <input type="number" placeholder="Rp Min" className="w-full p-2 border rounded text-sm" />
-              <input type="number" placeholder="Rp Max" className="w-full p-2 border rounded text-sm" />
-            </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {priceRanges.map(pr => {
-                return (
-                  <span key={JSON.stringify(pr._id)} className="bg-white text-gray-700 text-sm font-medium px-3 py-2 rounded border border-gray-300 hover:border-green-500 cursor-pointer transition-colors duration-200">
-                    {formatCurrency(pr._id.min)} - {formatCurrency(pr._id.max)}
+              {facets.categories.map((category) => (
+                <label key={category._id} className="flex items-center justify-between gap-4 text-sm">
+                  <div className="flex items-center">
+                    <input
+                      name='categories'
+                      type="checkbox"
+                      className="mr-2 w-4 h-4"
+                      value={category._id}
+                      checked={searchParams.getAll('categories').includes(category._id)}
+                      onChange={(e) => handleCategoryChange(category._id, e.target.checked)}
+                    />
+                    <span>{category._id}</span>
+                  </div>
+                  <span className="bg-gray-200 text-gray-700 text-center min-w-6 px-2 py-1 rounded-full text-xs font-medium">
+                    {formatCompactNumber(category.count)}
                   </span>
-
-                )
-              })}
-            </div>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
-            <div className="space-y-2">
-              {[5, 4, 3].map((rating) => (
-                <label key={rating} className="flex items-center text-sm">
-                  <input type="radio" name="rating" className="mr-2 w-4 h-4" />
-                  <IoMdStar size={18} className="text-yellow-500 mr-1" />
-                  {rating}  {rating < 5 && 'ke atas'}
                 </label>
               ))}
             </div>
           </div>
-          <div className="flex flex-col text-center">
-            <button type="submit" className="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 text-sm font-medium">
-              Terapkan Filter
-            </button>
-            <Link href='/products' className="w-full text-green-500 bg-white py-2 px-4 rounded border border-green-500 text-sm font-medium mt-2">
-              Reset Filter
-            </Link>
+        )}
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Rentang Harga</label>
+          <div className="flex flex-col space-y-2">
+            <input
+              type="number"
+              name="priceRangeMin"
+              placeholder="Rp Min"
+              className="w-full p-2 border rounded text-sm"
+              onChange={(e) => handleFilter('priceRangeMin', e.target.value)}
+              value={searchParams.get('priceRangeMin') || ''}
+            />
+            <input
+              type="number"
+              name="priceRangeMax"
+              placeholder="Rp Max"
+              className="w-full p-2 border rounded text-sm"
+              onChange={(e) => handleFilter('priceRangeMax', e.target.value)}
+              value={searchParams.get('priceRangeMax') || ''}
+            />
           </div>
-        </form>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {facets.priceRanges.map(pr => {
+              const priceRangeValue = `${pr._id.min}-${pr._id.max}`;
+              return (
+                <label key={priceRangeValue} className="relative">
+                  <input
+                    type="radio"
+                    name="priceRange"
+                    value={priceRangeValue}
+                    checked={searchParams.get('priceRange') === priceRangeValue}
+                    onChange={() => handleFilter('priceRange', priceRangeValue)}
+                    className="peer absolute opacity-0 w-full h-full cursor-pointer"
+                  />
+                  <span className="bg-white text-gray-700 text-sm font-medium px-3 py-2 rounded border border-gray-300 hover:border-green-500 cursor-pointer transition-colors duration-200 inline-block peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">
+                    {formatCurrency(pr._id.min)} - {formatCurrency(pr._id.max)}
+                  </span>
+                </label>
+              )
+            })}
+          </div>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+          <div className="space-y-2">
+            {[5, 4, 3].map((rating) => (
+              <label key={rating} className="flex items-center text-sm">
+                <input
+                  type="radio"
+                  checked={searchParams.get('rating') === rating.toString()}
+                  value={rating}
+                  name="rating"
+                  onChange={() => handleFilter('rating', rating.toString())}
+                  className="mr-2 w-4 h-4"
+                />
+                <IoMdStar size={18} className="text-yellow-500 mr-1" />
+                {rating}  {rating < 5 && 'ke atas'}
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
-
   );
 }

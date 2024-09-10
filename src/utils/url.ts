@@ -3,5 +3,10 @@ export const setQueryParams = (searchParams: URLSearchParams, params: Record<str
   Object.entries(params).forEach(([key, value]) => {
     newSearchParams.set(key, value.toString());
   });
-  return newSearchParams.toString();
+  return newSearchParams
 };
+
+export const buildSearchParams = (url?: string | null) => {
+  const searchParams = url ? new URL(url).searchParams : new URLSearchParams();
+  return searchParams
+}

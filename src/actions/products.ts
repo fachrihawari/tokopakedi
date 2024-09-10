@@ -38,7 +38,7 @@ export async function getProducts({ q, page }: GetProductsParam): Promise<GetPro
   return res.json();
 }
 
-type GetProductsFacetsResponse = {
+export type GetProductsFacetsResponse = {
   priceRanges: {
     _id: {
       min: number,
@@ -51,7 +51,7 @@ type GetProductsFacetsResponse = {
     count: number
   }[]
 }
-export async function getProductsFacets({ q, page }: GetProductsParam): Promise<GetProductsFacetsResponse> {
+export async function getProductsFacets({ q }: GetProductsParam): Promise<GetProductsFacetsResponse> {
   const url = new URL('http://localhost:3000/api/products/facets');
   if (q) url.searchParams.set('q', q);
 

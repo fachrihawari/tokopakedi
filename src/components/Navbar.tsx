@@ -3,11 +3,10 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
 import SearchInput from './SearchInput';
-import { setQueryParams } from '@/utils/url';
+import { buildSearchParams, setQueryParams } from '@/utils/url';
 
 function Navbar() {
-  const currentUrl = headers().get('x-current-url') // HACK: get current url from headers
-  const searchParams = currentUrl ? new URL(currentUrl).searchParams : new URLSearchParams();
+  const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
   const search = searchParams.get('q') ?? ''
 
   const handleSearch = async (formData: FormData) => {
