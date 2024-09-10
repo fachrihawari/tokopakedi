@@ -1,32 +1,25 @@
-'use client'
-
+import { headers } from 'next/headers';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation';
 import { FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import SearchInput from './SearchInput';
+import { setQueryParams } from '@/utils/url';
 
 function Navbar() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [search, setSearch] = useState('')
+  const currentUrl = headers().get('x-current-url') // HACK: get current url from headers
+  const searchParams = currentUrl ? new URL(currentUrl).searchParams : new URLSearchParams();
+  const search = searchParams.get('q') ?? ''
 
-  useEffect(() => {
-    setSearch(searchParams.get('q') ?? '')
-  }, [searchParams])
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const newSearchParams = new URLSearchParams(searchParams)
-    newSearchParams.set('q', search)
-    newSearchParams.set('page', '1')
-    router.push(`/products?${newSearchParams.toString()}`)
+  const handleSearch = async (formData: FormData) => {
+    'use server'
+    const newSearchParams = setQueryParams(searchParams, { q: formData.get('q') as string, page: 1 })
+    redirect(`/products?${newSearchParams.toString()}`)
   }
 
-  const handleClearSearch = () => {
-    const newSearchParams = new URLSearchParams(searchParams)
-    newSearchParams.delete('q')
-    newSearchParams.set('page', '1')
-    router.push(`/products?${newSearchParams.toString()}`)
+  const handleClearSearch = async () => {
+    'use server'
+    const newSearchParams = setQueryParams(searchParams, { q: '', page: 1 })
+    redirect(`/products?${newSearchParams.toString()}`)
   }
 
   return (
@@ -40,22 +33,19 @@ function Navbar() {
 
           {/* Search Bar */}
           <div className="hidden sm:flex sm:flex-1 mx-4 sm:mx-8 md:mx-16">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <FiSearch size={20} className='absolute left-3 top-2.5 text-gray-400' />
-              <input
-                type="text"
-                name='q'
-                placeholder="Cari di TokoPakEdi"
-                className="w-full py-2 pl-10 px-4 pr-10 rounded-lg border border-gray-300 focus:outline-none focus:border-green-500"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+            <div className='relative w-full'>
+              <form action={handleSearch}>
+                <FiSearch size={20} className='absolute left-3 top-2.5 text-gray-400' />
+                <SearchInput defaultValue={search} />
+              </form>
               {search && (
-                <button type='button' onClick={handleClearSearch}>
-                  <FiX size={20} className='absolute right-3 top-2.5 text-gray-400' />
-                </button>
+                <form action={handleClearSearch}>
+                  <button type='submit' className='absolute right-3 top-2.5 text-gray-400'>
+                    <FiX size={20} />
+                  </button>
+                </form>
               )}
-            </form>
+            </div>
           </div>
 
           {/* Navigation Icons */}

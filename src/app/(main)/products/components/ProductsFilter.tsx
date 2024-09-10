@@ -10,9 +10,6 @@ type ProductsFilterProps = {
   }
 }
 export default async function ProductsFilter({ searchParams }: ProductsFilterProps) {
-
-  console.log("referrer", headers().get('referer'))
-
   const { priceRanges, categories } = await getProductsFacets(searchParams);
   return (
     <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-20 self-start">
