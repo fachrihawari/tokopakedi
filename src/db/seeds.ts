@@ -8,9 +8,13 @@ const TOTAL_PRODUCTS = BASE_PRODUCTS * process.env.TOTAL_PRODUCTS;
 async function seed() {
   console.log("Seeding products...");
 
+  const categories = new Array(8).fill(0).map((_, i) => faker.commerce.department());
+
   let products: Product[] = [];
   for (let i = 1; i <= TOTAL_PRODUCTS; i++) {
     let productName = faker.commerce.productName();
+
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
     const newProduct: Product = {
       name: productName,
@@ -26,7 +30,7 @@ async function seed() {
       price: Math.round(faker.number.int({ min: 10000, max: 1000000 }) / 1000) * 1000,
       discount: faker.number.int({ min: 0, max: 50 }),
       stock: faker.number.int({ min: 0, max: 100 }),
-      category: faker.commerce.department(),
+      category: randomCategory,
       tags: [
         faker.commerce.productAdjective(),
         faker.commerce.productAdjective(),

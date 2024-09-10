@@ -21,7 +21,8 @@ export default function ProductsFilter() {
   }, [searchParams]);
 
   const handleFilter = (key: string, value: string) => {
-    const newSearchParams = setQueryParams(searchParams, { [key]: value, page: '1' });
+    const isSelected = searchParams.get(key) === value;
+    const newSearchParams = setQueryParams(searchParams, { [key]: isSelected ? '' : value, page: '1' });
     router.push(`/products?${newSearchParams.toString()}`);
   };
 
@@ -99,7 +100,7 @@ export default function ProductsFilter() {
                     name="priceRange"
                     value={priceRangeValue}
                     checked={searchParams.get('priceRange') === priceRangeValue}
-                    onChange={() => handleFilter('priceRange', priceRangeValue)}
+                    onClick={() => handleFilter('priceRange', priceRangeValue)}
                     className="peer absolute opacity-0 w-full h-full cursor-pointer"
                   />
                   <span className="bg-white text-gray-700 text-sm font-medium px-3 py-2 rounded border border-gray-300 hover:border-green-500 cursor-pointer transition-colors duration-200 inline-block peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">
@@ -113,20 +114,18 @@ export default function ProductsFilter() {
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
           <div className="space-y-2">
-            {[5, 4, 3].map((rating) => (
-              <label key={rating} className="flex items-center text-sm">
-                <input
-                  type="radio"
-                  checked={searchParams.get('rating') === rating.toString()}
-                  value={rating}
-                  name="rating"
-                  onChange={() => handleFilter('rating', rating.toString())}
-                  className="mr-2 w-4 h-4"
-                />
-                <IoMdStar size={18} className="text-yellow-500 mr-1" />
-                {rating}  {rating < 5 && 'ke atas'}
-              </label>
-            ))}
+            <label className="flex items-center text-sm">
+              <input
+                type="checkbox"
+                checked={searchParams.get('rating') === '4'}
+                value={4}
+                name="rating"
+                onChange={() => handleFilter('rating', '4')}
+                className="mr-2 w-4 h-4"
+              />
+              <IoMdStar size={18} className="text-yellow-500 mr-1" />
+              4 keatas
+            </label>
           </div>
         </div>
       </div>

@@ -5,7 +5,10 @@ import { getProducts } from "@/actions/products";
 type ListProps = {
   searchParams: {
     q: string,
-    page: number
+    page: number,
+    rating: number,
+    priceRange: string,
+    categories: string[]
   }
 }
 async function ProductsList({ searchParams }: ListProps) {

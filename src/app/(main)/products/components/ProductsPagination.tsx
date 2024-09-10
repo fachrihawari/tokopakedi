@@ -16,7 +16,7 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
       page,
       isActive
     }
-  });
+  }).filter(({ page }) => page <= totalPages)
 
   if (totalPages <= 1) return null;
 
@@ -40,20 +40,24 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
             </Link>
           )
         })}
-        <button
-          className={`px-3 py-2 text-sm font-medium bg-white text-gray-500 hover:bg-gray-50`}
-        >
-          ...
-        </button>
-        <Link
-          href={`/products?${setQueryParams(searchParams, { page: totalPages })}`}
-          className={`px-3 py-2 text-sm font-medium ${totalPages === currentPage
-            ? 'bg-green-500 text-white hover:bg-green-600'
-            : 'bg-white text-gray-500 hover:bg-gray-50'
-            }`}
-        >
-          {totalPages}
-        </Link>
+        {totalPages > 10 && (
+          <>
+            <button
+              className={`px-3 py-2 text-sm font-medium bg-white text-gray-500 hover:bg-gray-50`}
+            >
+              ...
+            </button>
+            <Link
+              href={`/products?${setQueryParams(searchParams, { page: totalPages })}`}
+              className={`px-3 py-2 text-sm font-medium ${totalPages === currentPage
+                ? 'bg-green-500 text-white hover:bg-green-600'
+                : 'bg-white text-gray-500 hover:bg-gray-50'
+                }`}
+            >
+              {totalPages}
+            </Link>
+          </>
+        )}
         <Link href={`/products?${setQueryParams(searchParams, { page: currentPage + 1 })}`} className="px-3 py-2 rounded-r-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
           <FiChevronRight />
         </Link>

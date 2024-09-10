@@ -17,6 +17,9 @@ export async function getBestSellers(): Promise<Product[]> {
 type GetProductsParam = {
   q?: string;
   page?: number;
+  rating?: number;
+  priceRange?: string;
+  categories?: string[];
 }
 type GetProductsResponse = {
   products: Product[];
@@ -27,10 +30,17 @@ type GetProductsResponse = {
     limit: number;
   }
 }
-export async function getProducts({ q, page }: GetProductsParam): Promise<GetProductsResponse> {
+export async function getProducts({ q, page, rating, priceRange, categories }: GetProductsParam): Promise<GetProductsResponse> {
   const url = new URL('http://localhost:3000/api/products');
   if (q) url.searchParams.set('q', q);
   if (page) url.searchParams.set('page', page.toString());
+  if (rating) url.searchParams.set('rating', rating.toString());
+  if (priceRange) url.searchParams.set('priceRange', priceRange);
+  if (Array.isArray(categories)) {
+    categories.forEach(category => url.searchParams.append('categories', category));
+  } else if (categories) {
+    url.searchParams.set('categories', categories as string);
+  }
 
   const res = await fetch(url, {
     cache: 'no-store',
