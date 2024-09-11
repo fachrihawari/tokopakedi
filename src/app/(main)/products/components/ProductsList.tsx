@@ -1,8 +1,8 @@
+import { getProducts } from "@/actions/products";
 import ProductCard from "@/components/ProductCard";
 import ProductsPagination from "./ProductsPagination";
-import { getProducts } from "@/actions/products";
 
-type ListProps = {
+export type ProductsListProps = {
   searchParams: {
     q: string,
     page: number,
@@ -11,7 +11,7 @@ type ListProps = {
     categories: string[]
   }
 }
-async function ProductsList({ searchParams }: ListProps) {
+async function ProductsList({ searchParams }: ProductsListProps) {
   const { products, pagination } = await getProducts(searchParams);
   const { currentPage, totalPages } = pagination;
 

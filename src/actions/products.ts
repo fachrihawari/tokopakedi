@@ -70,3 +70,10 @@ export async function getProductsFacets({ q }: GetProductsParam): Promise<GetPro
   });
   return res.json();
 }
+
+export async function getProductBySlug(slug: string): Promise<Product> {
+  const res = await fetch(`http://localhost:3000/api/products/${slug}`, {
+    cache: 'no-store',
+  });
+  return res.json();
+}

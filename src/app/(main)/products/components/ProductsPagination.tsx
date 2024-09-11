@@ -23,7 +23,7 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
   return (
     <div className="mt-8 flex justify-end">
       <nav className="inline-flex">
-        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage - 1 })}`} className="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50">
+        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage - 1 })}`} className="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
           <FiChevronLeft />
         </Link>
         {pages.map(({ isActive, page }) => {
@@ -58,7 +58,7 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
             </Link>
           </>
         )}
-        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage + 1 })}`} className="px-3 py-2 rounded-r-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage + 1 })}`} className="px-3 py-2 rounded-r-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
           <FiChevronRight />
         </Link>
       </nav>
