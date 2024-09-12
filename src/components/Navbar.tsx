@@ -1,9 +1,10 @@
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import { FiLogIn, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
 import SearchInput from './SearchInput';
 import { buildSearchParams, setQueryParams } from '@/utils/url';
+import TokoPakEdiLogo from './TokoPakEdiLogo';
 
 function Navbar() {
   const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
@@ -26,8 +27,8 @@ function Navbar() {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex text-green-500 tracking-widest items-center text-2xl font-bold">
-            TokoPakEdi
+          <Link href="/">
+            <TokoPakEdiLogo />
           </Link>
 
           {/* Search Bar */}
@@ -55,14 +56,19 @@ function Navbar() {
             <Link href="/cart" className="text-gray-600 hover:text-green-500">
               <FiShoppingCart size={24} />
             </Link>
-            <Link href="/profile" className="text-gray-600 hover:text-green-500">
-              <FiUser size={24} />
-            </Link>
+            <div className="flex items-center space-x-2">
+              <Link href="/login" className="bg-white text-green-500 px-3 py-1 border border-green-500 rounded-md">
+                Login
+              </Link>
+              <Link href="/register" className="text-white bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md">
+                Register
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     </nav>
   );
-};
+}
 
 export default Navbar;
