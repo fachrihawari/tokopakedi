@@ -9,11 +9,11 @@ import { IoMdStar } from "react-icons/io";
 
 export default function ProductsFilter() {
   const router = useRouter();
-  const searchParams = useSearchParams() || new URLSearchParams();
+  const searchParamsHook = useSearchParams()
   const [facets, setFacets] = useState<GetProductsFacetsResponse>({ priceRanges: [], categories: [] });
 
+  const searchParams = useMemo(() => searchParamsHook ?? new URLSearchParams(), [searchParamsHook])
   const searchParamsObject = useMemo(() => Object.fromEntries(searchParams.entries() ?? []), [searchParams]);
-
   useEffect(() => {
     const fetchFacets = async () => {
       const result = await getProductsFacets(searchParamsObject);
@@ -101,7 +101,7 @@ export default function ProductsFilter() {
                     type="radio"
                     name="priceRange"
                     value={priceRangeValue}
-                    checked={searchParams.get('priceRange') === priceRangeValue}
+                    defaultChecked={searchParams.get('priceRange') === priceRangeValue}
                     onClick={() => handleFilter('priceRange', priceRangeValue)}
                     className="peer absolute opacity-0 w-full h-full cursor-pointer"
                   />

@@ -4,8 +4,6 @@ services:
     restart: always
     expose:
       - ${PORT}
-    env_file:
-      - .env.local
     environment:
       PORT: ${PORT}
       MONGO_URI: ${MONGO_URI}
