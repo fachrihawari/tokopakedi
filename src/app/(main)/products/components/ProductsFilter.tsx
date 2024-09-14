@@ -4,21 +4,23 @@ import { getProductsFacets, GetProductsFacetsResponse } from "@/actions/products
 import { formatCurrency, formatCompactNumber } from "@/utils/number";
 import { setQueryParams } from "@/utils/url";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { IoMdStar } from "react-icons/io";
 
 export default function ProductsFilter() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() || new URLSearchParams();
   const [facets, setFacets] = useState<GetProductsFacetsResponse>({ priceRanges: [], categories: [] });
+
+  const searchParamsObject = useMemo(() => Object.fromEntries(searchParams.entries() ?? []), [searchParams]);
 
   useEffect(() => {
     const fetchFacets = async () => {
-      const result = await getProductsFacets(Object.fromEntries(searchParams.entries()));
+      const result = await getProductsFacets(searchParamsObject);
       setFacets(result);
     };
     fetchFacets();
-  }, [searchParams]);
+  }, [searchParamsObject]);
 
   const handleFilter = (key: string, value: string) => {
     const isSelected = searchParams.get(key) === value;

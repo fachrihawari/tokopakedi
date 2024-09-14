@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 export default function ProductsPagination({ currentPage, totalPages }: { currentPage: number, totalPages: number }) {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() || new URLSearchParams();
 
   const pages = [...new Array(totalPages > 10 ? 10 : totalPages)].map((_, index) => {
     const start = currentPage > 5 ? currentPage - 5 : 1;
