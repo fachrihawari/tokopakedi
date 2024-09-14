@@ -1,0 +1,28 @@
+services:
+  web:
+    build: .
+    restart: always
+    expose:
+      - ${PORT}
+    environment:
+      PORT: ${PORT}
+      MONGO_URI: ${MONGO_URI}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      TOTAL_PRODUCTS: ${TOTAL_PRODUCTS}
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tokopakedi.rule=Host(`tokopakedi.hawari.dev`)"
+      - "traefik.http.routers.tokopakedi.entrypoints=web"
+      - "traefik.http.services.tokopakedi.loadbalancer.server.port=${PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true

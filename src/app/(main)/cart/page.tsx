@@ -9,7 +9,7 @@ export default function CartPage() {
       <FiShoppingCart size={80} className="text-gray-300 mb-6" />
       <h2 className="text-xl font-semibold mb-3">Your shopping cart is empty</h2>
       <p className="text-gray-600 mb-8 text-center">
-        Looks like you haven't added anything to your cart yet.
+        Looks like you haven&#39;t added anything to your cart yet.
       </p>
       <Link
         href="/products"

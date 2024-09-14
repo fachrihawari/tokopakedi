@@ -32,7 +32,7 @@ function Carousel() {
   useEffect(() => {
     const interval = setInterval(nextSlide, 5000); // Auto-slide every 5 seconds
     return () => clearInterval(interval);
-  }, [items]);
+  }, []);
 
   return (
     <div className="relative w-full overflow-hidden">
