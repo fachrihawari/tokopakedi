@@ -1,6 +1,8 @@
 import { productsCollection } from "@/db/product_collection"
 import { NextResponse } from "next/server"
 
+export const dynamic = 'force-dynamic'
+
 type ProductSlugParams = {
   params: {
     slug: string
