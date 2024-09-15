@@ -1,0 +1,21 @@
+name: Deploy Project
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to main branch
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      # ssh into the server
+      - name: SSH into server
+        run: |
+          ssh -o StrictHostKeyChecking=no root@192.168.100.4 << 'EOF'
+          cd /root/apps/tokopakedi
+          git restore .
+          git pull origin main
+          docker compose down
+          docker compose up -d --build
+          EOF

@@ -5,6 +5,9 @@ import { Poppins } from "next/font/google";
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="waw" content="tokopakedi" />
+      </head>
       <body className={`${poppins.variable} font-sans`}>
         {children}
       </body>
