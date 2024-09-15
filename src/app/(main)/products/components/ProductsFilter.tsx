@@ -74,6 +74,8 @@ export default function ProductsFilter() {
         )}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Rentang Harga</label>
+          {/* Enable logic price range */}
+          {/*
           <div className="flex flex-col space-y-2">
             <input
               type="number"
@@ -92,6 +94,7 @@ export default function ProductsFilter() {
               value={searchParams.get('priceRangeMax') || ''}
             />
           </div>
+          */}
           <div className="mt-2 flex flex-wrap gap-2">
             {facets.priceRanges.map(pr => {
               const priceRangeValue = `${pr._id.min}-${pr._id.max}`;
