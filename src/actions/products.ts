@@ -1,16 +1,16 @@
 import { Product } from "@/db/product_collection";
 
-const APP_URL = process.env.APP_URL;
+const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
 export async function getLatest(): Promise<Product[]> {
-  const res = await fetch(`${APP_URL}/api/products/latest`, {
+  const res = await fetch(`${NEXT_PUBLIC_URL}/api/products/latest`, {
     cache: 'no-store',
   });
   return res.json();
 }
 
 export async function getBestSellers(): Promise<Product[]> {
-  const res = await fetch(`${APP_URL}/api/products/best-sellers`, {
+  const res = await fetch(`${NEXT_PUBLIC_URL}/api/products/best-sellers`, {
     cache: 'no-store',
   });
   return res.json();
@@ -33,7 +33,7 @@ type GetProductsResponse = {
   }
 }
 export async function getProducts({ q, page, rating, priceRange, categories }: GetProductsParam): Promise<GetProductsResponse> {
-  const url = new URL(`${APP_URL}/api/products`);
+  const url = new URL(`${NEXT_PUBLIC_URL}/api/products`);
   if (q) url.searchParams.set('q', q);
   if (page) url.searchParams.set('page', page.toString());
   if (rating) url.searchParams.set('rating', rating.toString());
@@ -64,7 +64,7 @@ export type GetProductsFacetsResponse = {
   }[]
 }
 export async function getProductsFacets({ q }: GetProductsParam): Promise<GetProductsFacetsResponse> {
-  const url = new URL(`${APP_URL}/api/products/facets`);
+  const url = new URL(`${NEXT_PUBLIC_URL}/api/products/facets`);
   if (q) url.searchParams.set('q', q);
 
   const res = await fetch(url, {
@@ -74,7 +74,7 @@ export async function getProductsFacets({ q }: GetProductsParam): Promise<GetPro
 }
 
 export async function getProductBySlug(slug: string): Promise<Product> {
-  const res = await fetch(`${APP_URL}/api/products/${slug}`, {
+  const res = await fetch(`${NEXT_PUBLIC_URL}/api/products/${slug}`, {
     cache: 'no-store',
   });
   return res.json();
