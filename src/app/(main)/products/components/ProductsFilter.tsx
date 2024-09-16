@@ -10,6 +10,7 @@ import { IoMdStar } from "react-icons/io";
 export default function ProductsFilter() {
   const router = useRouter();
   const searchParamsHook = useSearchParams()
+  const [loading, setLoading] = useState(true);
   const [facets, setFacets] = useState<GetProductsFacetsResponse>({ priceRanges: [], categories: [] });
 
   const searchParams = useMemo(() => searchParamsHook ?? new URLSearchParams(), [searchParamsHook])
@@ -18,6 +19,7 @@ export default function ProductsFilter() {
     const fetchFacets = async () => {
       const result = await getProductsFacets(searchParamsObject);
       setFacets(result);
+      setLoading(false);
     };
     fetchFacets();
   }, [searchParamsObject]);
@@ -43,35 +45,43 @@ export default function ProductsFilter() {
     router.push(`/products?${newSearchParams.toString()}`);
   };
 
+  const contentLoader = loading && (
+    <div className="space-y-2">
+      <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+      <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+      <div className="h-4 w-28 bg-gray-200 rounded animate-pulse"></div>
+    </div>
+  )
+
   return (
     <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-20 self-start">
       <h2 className="text-lg font-bold mb-2">Filter</h2>
       <div className="bg-white p-4 rounded-lg shadow">
-        {facets.categories.length > 0 && (
-          <div className="mb-4">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
-            <div className="space-y-2">
-              {facets.categories.map((category) => (
-                <label key={category._id} className="flex items-center justify-between gap-4 text-sm">
-                  <div className="flex items-center">
-                    <input
-                      name='categories'
-                      type="checkbox"
-                      className="mr-2 w-4 h-4"
-                      value={category._id}
-                      checked={searchParams.getAll('categories').includes(category._id)}
-                      onChange={(e) => handleCategoryChange(category._id, e.target.checked)}
-                    />
-                    <span>{category._id}</span>
-                  </div>
-                  <span className="bg-gray-200 text-gray-700 text-center min-w-6 px-2 py-1 rounded-full text-xs font-medium">
-                    {formatCompactNumber(category.count)}
-                  </span>
-                </label>
-              ))}
-            </div>
+
+        <div className="mb-4">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Kategori</label>
+          {contentLoader}
+          <div className="space-y-2">
+            {facets.categories.map((category) => (
+              <label key={category._id} className="flex items-center justify-between gap-4 text-sm">
+                <div className="flex items-center">
+                  <input
+                    name='categories'
+                    type="checkbox"
+                    className="mr-2 w-4 h-4"
+                    value={category._id}
+                    checked={searchParams.getAll('categories').includes(category._id)}
+                    onChange={(e) => handleCategoryChange(category._id, e.target.checked)}
+                  />
+                  <span>{category._id}</span>
+                </div>
+                <span className="bg-gray-200 text-gray-700 text-center min-w-6 px-2 py-1 rounded-full text-xs font-medium">
+                  {formatCompactNumber(category.count)}
+                </span>
+              </label>
+            ))}
           </div>
-        )}
+        </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Rentang Harga</label>
           {/* Enable logic price range */}
@@ -95,6 +105,7 @@ export default function ProductsFilter() {
             />
           </div>
           */}
+          {contentLoader}
           <div className="mt-2 flex flex-wrap gap-2">
             {facets.priceRanges.map(pr => {
               const priceRangeValue = `${pr._id.min}-${pr._id.max}`;
@@ -104,8 +115,9 @@ export default function ProductsFilter() {
                     type="radio"
                     name="priceRange"
                     value={priceRangeValue}
-                    defaultChecked={searchParams.get('priceRange') === priceRangeValue}
+                    checked={searchParams.get('priceRange') === priceRangeValue}
                     onClick={() => handleFilter('priceRange', priceRangeValue)}
+                    onChange={() => handleFilter('priceRange', priceRangeValue)}
                     className="peer absolute opacity-0 w-full h-full cursor-pointer"
                   />
                   <span className="bg-white text-gray-700 text-sm font-medium px-3 py-2 rounded border border-gray-300 hover:border-green-500 cursor-pointer transition-colors duration-200 inline-block peer-checked:bg-green-500 peer-checked:text-white peer-checked:border-green-500">
@@ -118,8 +130,9 @@ export default function ProductsFilter() {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-semibold text-gray-700 mb-2">Rating</label>
+          {contentLoader}
           <div className="space-y-2">
-            <label className="flex items-center text-sm">
+            {!loading && <label className="flex items-center text-sm">
               <input
                 type="checkbox"
                 checked={searchParams.get('rating') === '4'}
@@ -130,7 +143,7 @@ export default function ProductsFilter() {
               />
               <IoMdStar size={18} className="text-yellow-500 mr-1" />
               4 keatas
-            </label>
+            </label>}
           </div>
         </div>
       </div>
