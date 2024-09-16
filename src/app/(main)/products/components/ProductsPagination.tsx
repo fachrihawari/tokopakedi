@@ -23,14 +23,14 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
   return (
     <div className="mt-8 flex justify-end">
       <nav className="inline-flex">
-        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage - 1 })}`} className="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
+        <Link href={`/products?${setQueryParams({ page: currentPage - 1 }, searchParams)}`} className="px-3 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
           <FiChevronLeft />
         </Link>
         {pages.map(({ isActive, page }) => {
           return (
             <Link
               key={page}
-              href={`/products?${setQueryParams(searchParams, { page })}`}
+              href={`/products?${setQueryParams({ page }, searchParams)}`}
               className={`px-3 py-2 text-sm font-medium ${isActive
                 ? 'bg-green-500 text-white hover:bg-green-600'
                 : 'bg-white text-gray-500 hover:bg-gray-50'
@@ -48,7 +48,7 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
               ...
             </button>
             <Link
-              href={`/products?${setQueryParams(searchParams, { page: totalPages })}`}
+              href={`/products?${setQueryParams({ page: totalPages }, searchParams)}`}
               className={`px-3 py-2 text-sm font-medium ${totalPages === currentPage
                 ? 'bg-green-500 text-white hover:bg-green-600'
                 : 'bg-white text-gray-500 hover:bg-gray-50'
@@ -58,7 +58,7 @@ export default function ProductsPagination({ currentPage, totalPages }: { curren
             </Link>
           </>
         )}
-        <Link href={`/products?${setQueryParams(searchParams, { page: currentPage + 1 })}`} className="px-3 py-2 rounded-r-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
+        <Link href={`/products?${setQueryParams({ page: currentPage + 1 }, searchParams)}`} className="px-3 py-2 rounded-r-md bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 flex items-center justify-center">
           <FiChevronRight />
         </Link>
       </nav>

@@ -1,4 +1,5 @@
 import TokoPakEdiLogo from '@/components/TokoPakEdiLogo';
+import { register } from '@/lib/actions/users';
 import { ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { FaEnvelope, FaLock, FaUser, FaFacebook } from 'react-icons/fa';
@@ -19,12 +20,13 @@ export default function RegisterPage() {
         <div className="flex items-center justify-center mb-6">
           <TokoPakEdiLogo size='large' />
         </div>
-        <form>
+        <form action={register}>
           <div className="mb-4">
             <div className="relative">
               <input
                 type="text"
                 id="name"
+                name="name"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
                 placeholder="Full Name"
               />
@@ -36,6 +38,7 @@ export default function RegisterPage() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
                 placeholder="Email"
               />
@@ -47,6 +50,7 @@ export default function RegisterPage() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
                 placeholder="Password"
               />
@@ -58,6 +62,7 @@ export default function RegisterPage() {
               <input
                 type="password"
                 id="confirmPassword"
+                name="confirmPassword"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
                 placeholder="Confirm Password"
               />

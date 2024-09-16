@@ -1,4 +1,4 @@
-export const setQueryParams = (searchParams: URLSearchParams, params: Record<string, string|number>) => {
+export const setQueryParams = (params: Record<string, string|number>, searchParams?: URLSearchParams) => {
   const newSearchParams = new URLSearchParams(searchParams);
   Object.entries(params).forEach(([key, value]) => {
     newSearchParams.set(key, value.toString());

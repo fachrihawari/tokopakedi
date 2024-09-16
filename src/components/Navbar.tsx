@@ -12,13 +12,13 @@ function Navbar() {
 
   const handleSearch = async (formData: FormData) => {
     'use server'
-    const newSearchParams = setQueryParams(searchParams, { q: formData.get('q') as string, page: 1 })
+    const newSearchParams = setQueryParams({ q: formData.get('q') as string, page: 1 }, searchParams)
     redirect(`/products?${newSearchParams.toString()}`)
   }
 
   const handleClearSearch = async () => {
     'use server'
-    const newSearchParams = setQueryParams(searchParams, { q: '', page: 1 })
+    const newSearchParams = setQueryParams({ q: '', page: 1 }, searchParams)
     redirect(`/products?${newSearchParams.toString()}`)
   }
 

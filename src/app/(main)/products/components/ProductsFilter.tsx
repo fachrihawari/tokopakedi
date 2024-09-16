@@ -26,7 +26,7 @@ export default function ProductsFilter() {
 
   const handleFilter = (key: string, value: string) => {
     const isSelected = searchParams.get(key) === value;
-    const newSearchParams = setQueryParams(searchParams, { [key]: isSelected ? '' : value, page: '1' });
+    const newSearchParams = setQueryParams({ [key]: isSelected ? '' : value, page: '1' }, searchParams);
     router.push(`/products?${newSearchParams.toString()}`);
   };
 
