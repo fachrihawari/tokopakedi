@@ -2,12 +2,15 @@ import SweetAlert from "@/components/SweetAlert";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Suspense } from "react";
 
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} font-sans`}>
-        <SweetAlert />
+        <Suspense>
+          <SweetAlert />
+        </Suspense>
         {children}
       </body>
     </html>
