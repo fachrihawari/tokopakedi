@@ -1,4 +1,4 @@
-import { Product, productsCollection } from "@/db/product_collection";
+import { Product, productsCollection } from "@/lib/db/product_collection";
 import { Filter } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 

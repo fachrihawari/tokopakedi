@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import ProductCard from './ProductCard';
-import { Product } from '@/db/product_collection';
+import { Product } from '@/lib/db/product_collection';
 
 interface SectionProductsProps {
   label: string;

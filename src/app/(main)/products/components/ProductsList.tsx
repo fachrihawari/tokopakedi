@@ -1,4 +1,4 @@
-import { getProducts } from "@/actions/products";
+import { getProducts } from "@/lib/actions/products";
 import ProductCard from "@/components/ProductCard";
 import ProductsPagination from "./ProductsPagination";
 

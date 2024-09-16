@@ -1,5 +1,5 @@
-import type { Product } from "@/db/product_collection";
-import { formatCompactNumber, formatCurrency } from "@/utils/number";
+import type { Product } from "@/lib/db/product_collection";
+import { formatCompactNumber, formatCurrency } from "@/lib/utils/number";
 import Image from "next/image";
 import Link from "next/link";
 import { IoMdStar } from "react-icons/io";

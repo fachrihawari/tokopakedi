@@ -1,6 +1,6 @@
 import Carousel from "@/components/Carousel";
 import SectionProducts from "@/components/SectionProducts";
-import { getLatest, getBestSellers } from "@/actions/products";
+import { getLatest, getBestSellers } from "@/lib/actions/products";
 import { Suspense } from "react";
 import SectionProductsPlaceholder from "@/components/SectionProductsPlaceholder";
 

@@ -1,6 +1,6 @@
-import { getProductBySlug } from '@/actions/products'
+import { getProductBySlug } from '@/lib/actions/products'
 import { IoMdStar } from 'react-icons/io'
-import { formatCompactNumber, formatCurrency } from '@/utils/number'
+import { formatCompactNumber, formatCurrency } from '@/lib/utils/number'
 import ProductImages from './components/ProductImages'
 import { Metadata, ResolvingMetadata } from 'next'
 

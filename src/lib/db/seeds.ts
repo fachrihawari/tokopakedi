@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import slug from 'slug'
-import { Product, productsCollection } from "@/db/product_collection";
+import { Product, productsCollection } from "@/lib/db/product_collection";
 
 const BASE_PRODUCTS = 1_000
 const TOTAL_PRODUCTS = BASE_PRODUCTS * process.env.TOTAL_PRODUCTS;

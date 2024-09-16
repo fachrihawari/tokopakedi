@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FiLogIn, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
 import SearchInput from './SearchInput';
-import { buildSearchParams, setQueryParams } from '@/utils/url';
+import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
 
 function Navbar() {

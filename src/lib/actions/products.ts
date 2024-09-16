@@ -1,4 +1,4 @@
-import { Product } from "@/db/product_collection";
+import { Product } from "@/lib/db/product_collection";
 
 const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 

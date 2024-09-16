@@ -1,4 +1,4 @@
-import { productsCollection } from "@/db/product_collection"
+import { productsCollection } from "@/lib/db/product_collection"
 import { NextResponse } from "next/server"
 
 export const dynamic = 'force-dynamic'

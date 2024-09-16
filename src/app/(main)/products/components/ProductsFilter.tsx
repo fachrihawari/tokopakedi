@@ -1,8 +1,8 @@
 "use client"
 
-import { getProductsFacets, GetProductsFacetsResponse } from "@/actions/products";
-import { formatCurrency, formatCompactNumber } from "@/utils/number";
-import { setQueryParams } from "@/utils/url";
+import { getProductsFacets, GetProductsFacetsResponse } from "@/lib/actions/products";
+import { formatCurrency, formatCompactNumber } from "@/lib/utils/number";
+import { setQueryParams } from "@/lib/utils/url";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
 import { IoMdStar } from "react-icons/io";

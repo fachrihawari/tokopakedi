@@ -1,6 +1,6 @@
 "use client"
 
-import { setQueryParams } from "@/utils/url";
+import { setQueryParams } from "@/lib/utils/url";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
