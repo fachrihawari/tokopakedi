@@ -3,6 +3,7 @@ import { ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { FaEnvelope, FaLock, FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
+import { login } from '@/lib/actions/users';
 
 export const generateMetadata = async (_: {}, parentPromise: ResolvingMetadata) => {
   const parent = await parentPromise;
@@ -19,14 +20,16 @@ export default function LoginPage() {
         <div className="flex items-center justify-center mb-6">
           <TokoPakEdiLogo size='large' />
         </div>
-        <form>
+        <form action={login}>
           <div className="mb-4">
             <div className="relative">
               <input
                 type="email"
                 id="email"
+                name="email"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
-                placeholder="Email or Phone Number"
+                placeholder="Email"
+                required
               />
               <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -36,8 +39,10 @@ export default function LoginPage() {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500 pl-10"
                 placeholder="Password"
+                required
               />
               <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>

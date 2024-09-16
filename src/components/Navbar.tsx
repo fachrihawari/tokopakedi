@@ -1,14 +1,17 @@
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { FiLogIn, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import { FiSearch, FiShoppingCart, FiX } from 'react-icons/fi';
 import SearchInput from './SearchInput';
 import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
+import { logout } from '@/lib/actions/users';
 
 function Navbar() {
   const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
   const search = searchParams.get('q') ?? ''
+
+  const isLoggedIn = cookies().get('token')
 
   const handleSearch = async (formData: FormData) => {
     'use server'
@@ -57,12 +60,25 @@ function Navbar() {
               <FiShoppingCart size={24} />
             </Link>
             <div className="flex items-center space-x-2">
-              <Link href="/login" className="bg-white text-green-500 px-3 py-1 border border-green-500 rounded-md">
-                Login
-              </Link>
-              <Link href="/register" className="text-white bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md">
-                Register
-              </Link>
+              {
+                isLoggedIn ? (
+                  <form action={logout}>
+                    <button type='submit' className="bg-white text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-3 py-1 rounded-md">
+                      Logout
+                    </button>
+                  </form>
+                ) : (
+                  <>
+                    <Link href="/login" className="bg-white text-green-500 px-3 py-1 border border-green-500 rounded-md">
+                      Login
+                    </Link>
+                    <Link href="/register" className="text-white bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md">
+                      Register
+                    </Link>
+                  </>
+                )
+              }
+
             </div>
           </div>
         </div>
