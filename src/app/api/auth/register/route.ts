@@ -3,6 +3,7 @@ import { formatErrors } from "@/lib/utils/validator";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { hash } from "bcryptjs";
+import { cartsCollection } from "@/lib/db/cart_collection";
 
 const RegisterSchema = UserSchema.pick({
   name: true,
@@ -29,10 +30,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ errors: ["User already exists"] }, { status: 400 });
   }
 
-  await usersCollection.insertOne({
+  const result = await usersCollection.insertOne({
     ...data,
     password: await hash(data.password, 10),
     createdAt: new Date(),
+  });
+
+  await cartsCollection.insertOne({
+    userId: result.insertedId,
+    items: [],
+    totalAmount: 0,
   });
 
   return NextResponse.json({ message: "User has been registered successfully" }, { status: 201 });

@@ -16,5 +16,3 @@ export const formatCompactNumber = (value: number): string => {
     ? shortValue + suffixes[suffixNum]
     : parseFloat(shortValue).toFixed(0) + suffixes[suffixNum];
 };
-
-// ... existing code ...

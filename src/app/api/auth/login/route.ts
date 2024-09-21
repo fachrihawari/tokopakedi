@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { compare } from "bcryptjs";
 import { UserSchema, usersCollection } from "@/lib/db/user_collection";
-import { signJwtAccessToken } from "@/lib/utils/jwt";
+import { signToken } from "@/lib/utils/jwt";
 import { formatErrors } from "@/lib/utils/validator";
 
 const LoginSchema = UserSchema.pick({
@@ -32,10 +32,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate JWT token
-    const token = await signJwtAccessToken({ sub: user._id.toString(), email: user.email });
+    const token = await signToken({ sub: user._id.toString() });
 
     return NextResponse.json({ token }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ errors: ["Internal server error"] }, { status: 500 });
+    return NextResponse.json({ errors: ["An unexpected error occurred"] }, { status: 500 });
   }
 }

@@ -3,6 +3,7 @@ import { formatCompactNumber, formatCurrency } from "@/lib/utils/number";
 import Image from "next/image";
 import Link from "next/link";
 import { IoMdStar } from "react-icons/io";
+import AddToCartButton from "./AddToCartButton";
 
 interface ProductCardProps {
   product: Product;
@@ -31,8 +32,8 @@ function ProductCard({ product }: ProductCardProps) {
   )
 
   return (
-    <Link href={`/products/${product.slug}`}>
-      <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-300">
+    <div className="bg-white rounded-lg shadow overflow-hidden hover:shadow-md transition-shadow duration-300">
+      <Link href={`/products/${product.slug}`}>
         <Image src={product.thumbnail} alt={product.name} width={200} height={200} className="w-full h-40 object-cover" />
         <div className="p-3">
           <h3 className="text-sm font-medium mb-1 truncate">{product.name}</h3>
@@ -44,8 +45,11 @@ function ProductCard({ product }: ProductCardProps) {
             <span>Terjual {formatCompactNumber(product.sales)}</span>
           </div>
         </div>
+      </Link>
+      <div className="px-3 pb-3">
+        <AddToCartButton product={product} />
       </div>
-    </Link>
+    </div>
   )
 }
 

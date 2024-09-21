@@ -6,12 +6,16 @@ import SearchInput from './SearchInput';
 import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
 import { logout } from '@/lib/actions/users';
+import { getCart } from '@/lib/actions/cart';
 
-function Navbar() {
+async function Navbar() {
   const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
   const search = searchParams.get('q') ?? ''
 
   const isLoggedIn = cookies().get('token')
+  const cart = await getCart();
+  console.log(cart)
+  const cartItemCount = isLoggedIn ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0
 
   const handleSearch = async (formData: FormData) => {
     'use server'
@@ -56,8 +60,13 @@ function Navbar() {
             <Link href="/products" className="sm:hidden text-gray-600 hover:text-green-500">
               <FiSearch size={24} />
             </Link>
-            <Link href="/cart" className="text-gray-600 hover:text-green-500">
+            <Link href="/cart" className="text-gray-600 hover:text-green-500 relative">
               <FiShoppingCart size={24} />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  {cartItemCount}
+                </span>
+              )}
             </Link>
             <div className="flex items-center space-x-2">
               {

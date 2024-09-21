@@ -19,8 +19,6 @@ export async function GET(request: NextRequest) {
   }
   if (rating) filter["rating.value"] = { $gte: parseInt(rating) }
 
-  console.log(filter, "> filter")
-
   const page = parseInt(request.nextUrl.searchParams.get('page') || '1');
   const limit = parseInt(request.nextUrl.searchParams.get('limit') || '25');
   const skip = (page - 1) * limit;

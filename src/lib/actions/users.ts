@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 export const register = async (formData: FormData) => {
   const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/auth/register", {
     method: "POST",
+    cache: 'no-store',
     headers: {
       "Content-Type": "application/json",
     },
@@ -31,6 +32,7 @@ export const register = async (formData: FormData) => {
 export const login = async (formData: FormData) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth/login`, {
     method: 'POST',
+    cache: 'no-store',
     headers: {
       'Content-Type': 'application/json',
     },
