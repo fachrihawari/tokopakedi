@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import slug from 'slug'
-import { Product, productsCollection } from "@/lib/db/product_collection";
+import { ProductForm, productsCollection } from "@/lib/db/product_collection";
 
 const BASE_PRODUCTS = 1_000
 const TOTAL_PRODUCTS = BASE_PRODUCTS * process.env.TOTAL_PRODUCTS;
@@ -10,13 +10,13 @@ async function seed() {
 
   const categories = new Array(8).fill(0).map((_, i) => faker.commerce.department());
 
-  let products: Product[] = [];
+  let products: ProductForm[] = [];
   for (let i = 1; i <= TOTAL_PRODUCTS; i++) {
     let productName = faker.commerce.productName();
 
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
 
-    const newProduct: Product = {
+    const newProduct: ProductForm = {
       name: productName,
       slug: slug(productName),
       description: faker.commerce.productDescription(),

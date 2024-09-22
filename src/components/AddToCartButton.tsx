@@ -1,8 +1,8 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiShoppingCart } from "react-icons/fi";
-import { addToCart } from "@/lib/actions/cart";
+import { addToCart, getCart } from "@/lib/actions/cart";
 import type { Product } from "@/lib/db/product_collection";
 
 interface AddToCartButtonProps {
@@ -12,10 +12,20 @@ interface AddToCartButtonProps {
 
 export default function AddToCartButton({ product, size = 'small' }: AddToCartButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
+
+  useEffect(() => {
+    const checkIfInCart = async () => {
+      const cart = await getCart();
+      setIsInCart(cart.items.some(item => item.productId.toString() === product._id.toString()));
+    };
+
+    checkIfInCart();
+  }, [product._id]);
 
   const handleAddToCart = async () => {
     setIsLoading(true);
-    await addToCart(product._id?.toString() as string, 1);
+    await addToCart(product._id.toString(), 1);
     setIsLoading(false);
   };
 
@@ -28,11 +38,11 @@ export default function AddToCartButton({ product, size = 'small' }: AddToCartBu
   return (
     <button
       onClick={handleAddToCart}
-      disabled={isLoading}
+      disabled={isLoading || isInCart}
       className={`w-full bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed ${sizeClasses[size]}`}
     >
       <FiShoppingCart className={size === 'small' ? 'mr-1' : 'mr-2'} />
-      {isLoading ? 'Adding...' : 'Add to Cart'}
+      {isLoading ? 'Adding...' : isInCart ? 'Already in Cart' : 'Add to Cart'}
     </button>
   );
 }

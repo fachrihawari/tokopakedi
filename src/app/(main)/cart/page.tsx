@@ -1,21 +1,20 @@
-import { cookies } from 'next/headers';
 import CartNotLoggedIn from './components/CartNotLoggedIn';
 import CartEmpty from './components/CartEmpty';
 import CartItems from './components/CartItems';
 import { getCart } from '@/lib/actions/cart';
+import { isLoggedIn } from '@/lib/utils/auth';
 
 export default async function CartPage() {
-  const isLoggedIn = cookies().get('token'); // Replace this with actual authentication check
   const cart = await getCart();
-
+  
   let content;
-
-  if (!isLoggedIn) {
+  
+  if (!isLoggedIn()) {
     content = <CartNotLoggedIn />
-  } else if (cart.length === 0) {
+  } else if (cart.items.length === 0) {
     content = <CartEmpty />
   } else {
-    content = <CartItems initialCart={cart} />
+    content = <CartItems cartItems={cart.items} />
   }
 
   return (

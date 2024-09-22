@@ -1,4 +1,4 @@
-import { cookies, headers } from 'next/headers';
+import { headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FiSearch, FiShoppingCart, FiX } from 'react-icons/fi';
@@ -7,15 +7,13 @@ import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
 import { logout } from '@/lib/actions/users';
 import { getCart } from '@/lib/actions/cart';
+import { isLoggedIn } from '@/lib/utils/auth';
 
 async function Navbar() {
   const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
   const search = searchParams.get('q') ?? ''
-
-  const isLoggedIn = cookies().get('token')
   const cart = await getCart();
-  console.log(cart)
-  const cartItemCount = isLoggedIn ? cart.items.reduce((total, item) => total + item.quantity, 0) : 0
+  const cartItemCount = cart.items.reduce((total, item) => total + item.quantity, 0)
 
   const handleSearch = async (formData: FormData) => {
     'use server'
@@ -70,7 +68,7 @@ async function Navbar() {
             </Link>
             <div className="flex items-center space-x-2">
               {
-                isLoggedIn ? (
+                isLoggedIn() ? (
                   <form action={logout}>
                     <button type='submit' className="bg-white text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-3 py-1 rounded-md">
                       Logout

@@ -1,9 +1,8 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 import { z } from "zod";
 import { db } from "./client";
 
 export const ProductSchema = z.object({
-  _id: z.instanceof(ObjectId).optional(),
   name: z.string(),
   slug: z.string(),
   description: z.string(),
@@ -22,6 +21,7 @@ export const ProductSchema = z.object({
   createdAt: z.date().default(new Date()),
 });
 
-export type Product = z.infer<typeof ProductSchema>;
+export type ProductForm = z.infer<typeof ProductSchema>
+export type Product = WithId<ProductForm>
 
-export const productsCollection = db.collection<Product>("products");
+export const productsCollection = db.collection<ProductForm>("products");
