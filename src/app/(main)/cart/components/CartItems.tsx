@@ -10,8 +10,7 @@ export default function CartItems({ cartItems }: CartItemsProps) {
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div className="md:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-2xl font-bold mb-4">Products</h2>
+      <div className="md:col-span-2 bg-white rounded-lg flex flex-col gap-4">
         {cartItems.map((item) => (
           <CartItem
             key={item.productId.toString()}
@@ -19,7 +18,7 @@ export default function CartItems({ cartItems }: CartItemsProps) {
           />
         ))}
       </div>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24 self-start">
         <h2 className="text-2xl font-bold mb-4">Order Summary</h2>
         <div className="space-y-4">
           <div className="flex justify-between items-center">

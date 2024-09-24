@@ -54,7 +54,7 @@ export default function ProductsFilter() {
   )
 
   return (
-    <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-20 self-start">
+    <div className="w-full md:w-1/4 mb-6 md:mb-0 md:pr-4 sticky top-24 self-start">
       <h2 className="text-lg font-bold mb-2">Filter</h2>
       <div className="bg-white p-4 rounded-lg shadow">
 

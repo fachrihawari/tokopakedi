@@ -5,8 +5,6 @@ import { Cart } from "@/lib/db/cart_collection";
 import { isLoggedIn } from "@/lib/utils/auth";
 import { ObjectId } from "mongodb";
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
-import { setQueryParams } from "../utils/url";
 
 const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
@@ -36,9 +34,6 @@ export async function addToCart(productId: string, quantity: number) {
   });
 
   revalidateTag('cart')
-
-  const successQuery = setQueryParams({ type: 'success', title: "Added to Cart", message: "The product has been added to your cart." });
-  redirect('/cart?' + successQuery);
 }
 
 export async function updateCartItemQuantity(productId: string, quantity: number) {
@@ -62,7 +57,4 @@ export async function removeFromCart(productId: string) {
   });
 
   revalidateTag('cart')
-
-  const successQuery = setQueryParams({ type: 'success', title: "Removed from Cart", message: "The product has been removed from your cart." });
-  redirect('/cart?' + successQuery);
 }
