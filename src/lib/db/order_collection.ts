@@ -3,7 +3,7 @@ import { z } from "zod";
 import { db } from "./client";
 import { CartItemSchema } from "./cart_collection";
 
-const NotificationSchema = z.object({
+export const MidtransNotificationSchema = z.object({
   transaction_time: z.string(),
   transaction_status: z.string(),
   transaction_id: z.string(),
@@ -27,7 +27,7 @@ const NotificationSchema = z.object({
 
 export const PaymentSchema = z.object({
   token: z.string().optional(),
-  notification: NotificationSchema.optional()
+  notification: MidtransNotificationSchema.optional()
 })
 
 export const OrderSchema = z.object({
@@ -40,6 +40,7 @@ export const OrderSchema = z.object({
   updatedAt: z.date().default(new Date()).optional(),
 });
 
+export type MidtransNotification = z.infer<typeof MidtransNotificationSchema>
 export type OrderForm = z.infer<typeof OrderSchema>
 export type Order = WithId<OrderForm>
 

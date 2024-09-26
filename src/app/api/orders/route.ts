@@ -2,9 +2,8 @@ import { ObjectId } from "mongodb";
 import { OrderForm, OrderSchema, ordersCollection } from "@/lib/db/order_collection";
 import { NextRequest, NextResponse } from "next/server";
 import { cartsCollection } from "@/lib/db/cart_collection";
-import midtransClient from "midtrans-client";
 import { usersCollection } from "@/lib/db/user_collection";
-
+import midtransSnap from "@/lib/payment/midtrans";
 export async function GET(req: NextRequest) {
   const userId = String(req.headers.get("x-user-id"))
   const orders = await ordersCollection.find({ userId: new ObjectId(userId) }).toArray()
@@ -40,13 +39,6 @@ export async function POST(req: NextRequest) {
     // Insert the order into the database
     const result = await ordersCollection.insertOne(newOrder);
 
-    // Prepare Midtrans payment request
-    const snap = new midtransClient.Snap({
-      isProduction: process.env.NODE_ENV === "production",
-      serverKey: process.env.MIDTRANS_SERVER_KEY,
-      clientKey: process.env.MIDTRANS_CLIENT_KEY
-    });
-
     const transactionDetails = {
       order_id: result.insertedId.toString(),
       gross_amount: newOrder.total
@@ -71,7 +63,9 @@ export async function POST(req: NextRequest) {
     };
 
     // Create Midtrans transaction
-    const transaction = await snap.createTransaction(midtransParameter);
+    const transaction = await midtransSnap.createTransaction(midtransParameter);
+
+    await ordersCollection.updateOne({ _id: result.insertedId }, { $set: { payment: { token: transaction.token } } })
 
     // Return the Midtrans token
     return NextResponse.json({
