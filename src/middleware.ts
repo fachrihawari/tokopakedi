@@ -24,7 +24,7 @@ export async function middleware(request: NextRequest) {
   try {
     let headers = captureCurrentUrl(request)
 
-    if (request.nextUrl.pathname.startsWith('/api/cart')) {
+    if (request.nextUrl.pathname.startsWith('/api/cart') || request.nextUrl.pathname.startsWith('/api/orders')) {
       headers = await auth(headers)
     }
 

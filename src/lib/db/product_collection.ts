@@ -1,4 +1,4 @@
-import { ObjectId, WithId } from "mongodb";
+import { WithId } from "mongodb";
 import { z } from "zod";
 import { db } from "./client";
 
@@ -7,18 +7,18 @@ export const ProductSchema = z.object({
   slug: z.string(),
   description: z.string(),
   thumbnail: z.string(),
-  price: z.number().min(1),
+  price: z.number().min(0).positive(),
   discount: z.number().optional(),
   images: z.array(z.string()),
-  stock: z.number().min(0),
+  stock: z.number().int().min(0),
   category: z.string(),
   tags: z.array(z.string()).default([]),
-  sales: z.number().default(0),
+  sales: z.number().int().default(0),
   rating: z.object({
     count: z.number().min(0).default(0),
     value: z.number().min(0).max(5).default(0),
   }),
-  createdAt: z.date().default(new Date()),
+  createdAt: z.date().default(new Date()).optional(),
 });
 
 export type ProductForm = z.infer<typeof ProductSchema>

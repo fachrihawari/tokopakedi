@@ -1,13 +1,15 @@
 import { ObjectId, WithId } from "mongodb";
 import { z } from "zod";
 import { db } from "./client";
+import { ProductSchema } from "./product_collection";
 
-export const CartItemSchema = z.object({
-  productId: z.instanceof(ObjectId),
-  name: z.string(),
-  price: z.number().positive(),
+export const CartItemSchema = ProductSchema.pick({
+  name: true,
+  price: true,
+  thumbnail: true,
+}).extend({
   quantity: z.number().int().min(1),
-  thumbnail: z.string().url(),
+  productId: z.instanceof(ObjectId),
 });
 
 export const CartSchema = z.object({

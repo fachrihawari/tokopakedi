@@ -15,20 +15,23 @@ function SweetAlert() {
   useEffect(() => {
     if (message && type) {
       const isError = type === 'error'
-      
+      const messageArray = message.split(',')
+
+      const titleHtml = isError && messageArray.length > 1
+        ? `<p class="mb-2 text-gray-700">Please correct the following ${message.includes(',') ? 'errors' : 'error'}:</p>` : ''
+      const messageHtml = messageArray.length > 1 ?
+        `<ul class="list-disc list-inside space-y-1">
+          ${messageArray.map((msg) => `<li>${msg.trim()}</li>`).join('')}
+        </ul>` : `<p class="text-center">${messageArray[0]}</p>`
+
       Swal.fire({
         icon: isError ? 'error' : 'success',
         title: title || (isError ? 'Error' : 'Success'),
         html: `
           <div class="text-left">
-            ${isError 
-              ? `<p class="mb-2 text-gray-700">Please correct the following ${message.includes(',') ? 'errors' : 'error'}:</p>
-                 <ul class="list-disc list-inside space-y-1">
-                   ${message.split(',').map((msg) => `<li>${msg.trim()}</li>`).join('')}
-                 </ul>`
-              : `<p class="text-center">${message}</p>`
-            }
-          </div>
+            ${titleHtml}
+            ${messageHtml}
+          </div >
         `,
         customClass: {
           popup: 'rounded-lg shadow-xl border border-gray-200',
