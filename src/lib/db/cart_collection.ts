@@ -15,7 +15,6 @@ export const CartItemSchema = ProductSchema.pick({
 export const CartSchema = z.object({
   userId: z.instanceof(ObjectId),
   items: z.array(CartItemSchema),
-  totalAmount: z.number().positive(),
 });
 
 export type CartItem = z.infer<typeof CartItemSchema>;

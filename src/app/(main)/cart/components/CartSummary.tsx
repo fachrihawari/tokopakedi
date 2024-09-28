@@ -2,7 +2,7 @@
 
 import { formatCurrency } from "@/lib/utils/number";
 import type { CartItem as CartItemType } from "@/lib/db/cart_collection";
-import { checkout } from "@/lib/actions/orders";
+import { createOrder } from "@/lib/actions/orders";
 import { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import { useMidtrans } from "@/lib/hooks/useMidtrans";
@@ -31,7 +31,7 @@ export default function CartSummary({ cartItems }: CartSummaryProps) {
       console.log("close")
     }
   })
-  const [checkoutState, handleCheckout] = useFormState<CheckoutState>(checkout, {
+  const [checkoutState, handleCheckout] = useFormState<CheckoutState>(createOrder, {
     paymentToken: ""
   })
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);

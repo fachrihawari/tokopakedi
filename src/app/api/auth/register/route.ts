@@ -30,16 +30,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ errors: ["User already exists"] }, { status: 400 });
   }
 
+  const { name, email, password } = data
   const result = await usersCollection.insertOne({
-    ...data,
-    password: await hash(data.password, 10),
+    name,
+    email,
+    password: await hash(password, 10),
     createdAt: new Date(),
   });
 
   await cartsCollection.insertOne({
     userId: result.insertedId,
     items: [],
-    totalAmount: 0,
   });
 
   return NextResponse.json({ message: "User has been registered successfully" }, { status: 201 });

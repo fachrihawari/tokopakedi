@@ -1,4 +1,5 @@
-import { productsCollection } from "@/lib/db/product_collection"
+import { Product, productsCollection } from "@/lib/db/product_collection"
+import { Filter, ObjectId } from "mongodb"
 import { NextResponse } from "next/server"
 
 export const dynamic = 'force-dynamic'
@@ -9,7 +10,8 @@ type ProductSlugParams = {
   }
 }
 export async function GET(_: Request, { params }: ProductSlugParams) {
-  const product = await productsCollection.findOne({ slug: params.slug })
+  const filter: Filter<Product> = ObjectId.isValid(params.slug) ? { _id: new ObjectId(params.slug) } : { slug: params.slug }
+  const product = await productsCollection.findOne(filter)
   if (!product) {
     return NextResponse.json({ error: 'Product not found' }, { status: 404 })
   }

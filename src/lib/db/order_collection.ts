@@ -36,8 +36,8 @@ export const OrderSchema = z.object({
   payment: PaymentSchema.optional(),
   total: z.number().positive(),
   status: z.enum(["pending", "paid", "cancelled"]).default("pending"),
-  createdAt: z.date().default(new Date()).optional(),
-  updatedAt: z.date().default(new Date()).optional(),
+  createdAt: z.date().default(new Date()),
+  updatedAt: z.date().default(new Date()),
 });
 
 export type MidtransNotification = z.infer<typeof MidtransNotificationSchema>

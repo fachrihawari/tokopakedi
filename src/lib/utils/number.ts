@@ -1,11 +1,12 @@
 export const formatCurrency = (value: number) => {
-  const result = new Intl.NumberFormat('id-ID', {
+  const options: Intl.NumberFormatOptions = {
     currency: 'IDR',
     maximumFractionDigits: 0,
-    minimumFractionDigits: 0
-  }).format(value);
+    minimumFractionDigits: 0,
+  };
 
-  return result;
+  const currency = 'Rp. '
+  return currency + value.toLocaleString('id-ID', options);
 };
 
 export const formatCompactNumber = (value: number): string => {

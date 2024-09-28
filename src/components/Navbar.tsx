@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { FiSearch, FiShoppingCart, FiX } from 'react-icons/fi';
+import { FiShoppingBag, FiSearch, FiX, FiShoppingCart } from 'react-icons/fi';
 import SearchInput from './SearchInput';
 import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
@@ -65,6 +65,9 @@ async function Navbar() {
                   {cartItemCount}
                 </span>
               )}
+            </Link>
+            <Link href="/orders" className="text-gray-600 hover:text-green-500 relative">
+              <FiShoppingBag size={24} />
             </Link>
             <div className="flex items-center space-x-2">
               {

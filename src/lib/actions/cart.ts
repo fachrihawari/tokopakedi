@@ -10,7 +10,7 @@ const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
 export async function getCart(): Promise<Cart> {
   if (!isLoggedIn()) {
-    return { items: [], _id: new ObjectId(), userId: new ObjectId(), totalAmount: 0 }
+    return { items: [], _id: new ObjectId(), userId: new ObjectId() }
   }
   const res = await fetch(`${NEXT_PUBLIC_URL}/api/cart`, {
     headers: {

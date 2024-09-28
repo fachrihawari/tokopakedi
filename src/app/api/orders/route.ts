@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cartsCollection } from "@/lib/db/cart_collection";
 import { usersCollection } from "@/lib/db/user_collection";
 import midtransSnap from "@/lib/payment/midtrans";
+import { client } from "@/lib/db/client";
 export async function GET(req: NextRequest) {
   const userId = String(req.headers.get("x-user-id"))
   const orders = await ordersCollection.find({ userId: new ObjectId(userId) }).toArray()
@@ -13,13 +14,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const userId = String(req.headers.get("x-user-id"))
 
+  const session = client.startSession()
   try {
+    session.startTransaction()
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) })
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    const cart = await cartsCollection.findOne({ userId: new ObjectId(userId) })
+    const cart = await cartsCollection.findOne({ userId: new ObjectId(userId) }, { session })
     if (!cart) {
       return NextResponse.json({ error: "Cart not found" }, { status: 404 })
     }
@@ -37,7 +40,16 @@ export async function POST(req: NextRequest) {
     OrderSchema.parse(newOrder)
 
     // Insert the order into the database
-    const result = await ordersCollection.insertOne(newOrder);
+    const result = await ordersCollection.insertOne(newOrder, { session });
+
+    // Clear cart
+    await cartsCollection.updateOne(
+      { userId: new ObjectId(userId) },
+      {
+        $set: { items: [] }
+      },
+      { session }
+    )
 
     const transactionDetails = {
       order_id: result.insertedId.toString(),
@@ -65,7 +77,9 @@ export async function POST(req: NextRequest) {
     // Create Midtrans transaction
     const transaction = await midtransSnap.createTransaction(midtransParameter);
 
-    await ordersCollection.updateOne({ _id: result.insertedId }, { $set: { payment: { token: transaction.token } } })
+    await ordersCollection.updateOne({ _id: result.insertedId }, { $set: { payment: { token: transaction.token } } }, { session })
+
+    await session.commitTransaction()
 
     // Return the Midtrans token
     return NextResponse.json({
@@ -74,6 +88,9 @@ export async function POST(req: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
+    await session.abortTransaction()
     return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
+  } finally {
+    await session.endSession()
   }
 }
