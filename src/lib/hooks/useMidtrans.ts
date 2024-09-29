@@ -9,7 +9,7 @@ type MidtransCallbacks = {
   onClose?: () => void;
 }
 
-export function useMidtrans({ onSuccess, onPending, onError, }: MidtransCallbacks = {}) {
+export function useMidtrans({ onSuccess, onPending, onError, onClose }: MidtransCallbacks = {}) {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
@@ -30,6 +30,7 @@ export function useMidtrans({ onSuccess, onPending, onError, }: MidtransCallback
       if (onSuccess) callbacks.onSuccess = onSuccess
       if (onPending) callbacks.onPending = onPending
       if (onError) callbacks.onError = onError
+      if (onClose) callbacks.onClose = onClose
       window.snap.pay(token, callbacks)
     }
   }, [isReady, onSuccess, onPending, onError])

@@ -10,7 +10,13 @@ function SweetAlert() {
   const router = useRouter()
   const message = searchParams.get('message')
   const title = searchParams.get('title')
-  const type = searchParams.get('type') as 'success' | 'error' | null
+  const type = searchParams.get('type') as 'success' | 'error' | 'info' | null
+
+  const colorClasses = {
+    success: 'bg-green-500 hover:bg-green-600',
+    error: 'bg-red-500 hover:bg-red-600',
+    info: 'bg-blue-500 hover:bg-blue-600'
+  }
 
   useEffect(() => {
     if (message && type) {
@@ -25,8 +31,8 @@ function SweetAlert() {
         </ul>` : `<p class="text-center">${messageArray[0]}</p>`
 
       Swal.fire({
-        icon: isError ? 'error' : 'success',
-        title: title || (isError ? 'Error' : 'Success'),
+        icon: type,
+        title: title || type.charAt(0).toUpperCase() + type.slice(1),
         html: `
           <div class="text-left">
             ${titleHtml}
@@ -37,7 +43,7 @@ function SweetAlert() {
           popup: 'rounded-lg shadow-xl border border-gray-200',
           title: `text-2xl font-bold mb-4`,
           htmlContainer: 'text-base',
-          confirmButton: `${isError ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'} text-white font-semibold py-2 px-4 rounded`
+          confirmButton: `${colorClasses[type]} text-white font-semibold py-2 px-4 rounded`
         },
         buttonsStyling: false,
         showConfirmButton: true,

@@ -21,6 +21,10 @@ export async function getCart(): Promise<Cart> {
     }
   });
 
+  if (!res.ok) { // if failed to get cart from server
+    return { items: [], _id: new ObjectId(), userId: new ObjectId() }
+  }
+
   return res.json()
 }
 

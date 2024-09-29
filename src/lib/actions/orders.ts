@@ -17,14 +17,14 @@ export const createOrder = async () => {
   });
 
   if (!res.ok) {
-    const errorQuery = setQueryParams({ type: 'error', title: "Error", message: "Failed to checkout" });
+    const errorQuery = setQueryParams({ type: 'error', title: "Failed to checkout", message: "Please try again" });
     return redirect('/cart?' + errorQuery);
   }
 
   revalidateTag('cart')
-
+  
   const data = await res.json()
-  return data
+  redirect(`/payment/${data.paymentToken}`)
 }
 
 export const getOrders = async (): Promise<Order[]> => {

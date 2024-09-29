@@ -1,46 +1,14 @@
-'use client'
-
 import { formatCurrency } from "@/lib/utils/number";
 import type { CartItem as CartItemType } from "@/lib/db/cart_collection";
 import { createOrder } from "@/lib/actions/orders";
-import { useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { useMidtrans } from "@/lib/hooks/useMidtrans";
+import CartCheckoutButton from "./CartCheckoutButton";
 
 type CartSummaryProps = {
   cartItems: CartItemType[]
 }
 
-function CheckoutButton() {
-  const { pending } = useFormStatus()
-  const className = pending ? "bg-gray-500" : "bg-green-500 hover:bg-green-600 "
-  return (
-    <button disabled={pending} className={`mt-6 w-full text-white py-3 rounded-lg transition-colors duration-300 font-semibold ${className}`}>
-      {pending ? 'Loading...' : 'Proceed to Checkout'}
-    </button>
-  )
-}
-
-type CheckoutState = {
-  paymentToken: string
-}
-
 export default function CartSummary({ cartItems }: CartSummaryProps) {
-  const { isReady, pay } = useMidtrans({
-    onClose: () => {
-      console.log("close")
-    }
-  })
-  const [checkoutState, handleCheckout] = useFormState<CheckoutState>(createOrder, {
-    paymentToken: ""
-  })
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  useEffect(() => {
-    if (checkoutState.paymentToken && isReady) {
-      pay(checkoutState.paymentToken)
-    }
-  }, [checkoutState.paymentToken, isReady, pay])
 
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 sticky top-24 self-start">
@@ -61,8 +29,8 @@ export default function CartSummary({ cartItems }: CartSummaryProps) {
           </div>
         </div>
       </div>
-      <form action={handleCheckout}>
-        <CheckoutButton />
+      <form action={createOrder}>
+        <CartCheckoutButton />
       </form>
     </div>
   );
