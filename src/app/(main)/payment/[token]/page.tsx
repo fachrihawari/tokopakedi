@@ -4,12 +4,12 @@ import { useMidtrans } from "@/lib/hooks/useMidtrans"
 import { setQueryParams } from "@/lib/utils/url"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+
 type PaymentPageProps = {
   params: {
     token: string
   }
 }
-
 export default function PaymentPage({ params }: PaymentPageProps) {
   const { token } = params
   const router = useRouter()

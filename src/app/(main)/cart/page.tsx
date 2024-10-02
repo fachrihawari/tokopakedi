@@ -2,7 +2,7 @@ import CartNotLoggedIn from './components/CartNotLoggedIn';
 import CartEmpty from './components/CartEmpty';
 import CartItems from './components/CartItems';
 import { getCart } from '@/lib/actions/cart';
-import { isLoggedIn } from '@/lib/utils/auth';
+import { isLoggedIn } from '@/lib/actions/users';
 import CartSummary from './components/CartSummary';
 
 export default async function CartPage() {
@@ -10,7 +10,7 @@ export default async function CartPage() {
 
   let content;
 
-  if (!isLoggedIn()) {
+  if (!await isLoggedIn()) {
     content = <CartNotLoggedIn />
   } else if (cart.items.length === 0) {
     content = <CartEmpty />

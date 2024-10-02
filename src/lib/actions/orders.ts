@@ -5,10 +5,13 @@ import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { setQueryParams } from "@/lib/utils/url";
 import { Order } from "@/lib/db/order_collection";
+import { isLoggedIn } from "./users";
 
 const NEXT_PUBLIC_URL = process.env.NEXT_PUBLIC_URL
 
 export const createOrder = async () => {
+  if (!await isLoggedIn()) return
+
   const res = await fetch(`${NEXT_PUBLIC_URL}/api/orders`, {
     method: 'POST',
     headers: {
@@ -28,9 +31,14 @@ export const createOrder = async () => {
 }
 
 export const getOrders = async (): Promise<Order[]> => {
+  if (!await isLoggedIn()) return []
+
   const res = await fetch(`${NEXT_PUBLIC_URL}/api/orders`, {
     headers: {
       Cookie: cookies().toString()
+    },
+    next: {
+      tags: ['orders']
     }
   });
 

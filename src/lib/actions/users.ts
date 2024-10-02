@@ -1,8 +1,9 @@
 'use server';
 
 import { redirect } from "next/navigation";
-import { setQueryParams } from "../utils/url";
 import { cookies } from "next/headers";
+import { revalidateTag } from "next/cache";
+import { setQueryParams } from "@/lib/utils/url";
 
 export const register = async (formData: FormData) => {
   const res = await fetch(process.env.NEXT_PUBLIC_URL + "/api/auth/register", {
@@ -64,5 +65,11 @@ export const login = async (formData: FormData) => {
 
 export const logout = async () => {
   cookies().delete('token');
+  revalidateTag('cart')
+  revalidateTag('orders')
   redirect('/');
 };
+
+export const isLoggedIn = async () => {
+  return cookies().has('token')
+}

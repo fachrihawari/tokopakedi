@@ -1,7 +1,7 @@
 import { getOrders } from "@/lib/actions/orders";
 import OrdersEmpty from './components/OrdersEmpty';
 import OrdersList from './components/OrdersList';
-import { isLoggedIn } from '@/lib/utils/auth';
+import { isLoggedIn } from '@/lib/actions/users';
 import OrdersNotLoggedIn from './components/OrdersNotLoggedIn';
 
 export default async function OrdersPage() {
@@ -9,7 +9,7 @@ export default async function OrdersPage() {
 
   let content;
 
-  if (!isLoggedIn()) {
+  if (!await isLoggedIn()) {
     content = <OrdersNotLoggedIn />
   } else if (orders.length === 0) {
     content = <OrdersEmpty />

@@ -7,7 +7,7 @@ import { buildSearchParams, setQueryParams } from '@/lib/utils/url';
 import TokoPakEdiLogo from './TokoPakEdiLogo';
 import { logout } from '@/lib/actions/users';
 import { getCart } from '@/lib/actions/cart';
-import { isLoggedIn } from '@/lib/utils/auth';
+import { isLoggedIn } from '@/lib/actions/users';
 
 async function Navbar() {
   const searchParams = buildSearchParams(headers().get('x-current-url')) // HACK: get current url from headers
@@ -71,7 +71,7 @@ async function Navbar() {
             </Link>
             <div className="flex items-center space-x-2">
               {
-                isLoggedIn() ? (
+                await isLoggedIn() ? (
                   <form action={logout}>
                     <button type='submit' className="bg-white text-red-500 border border-red-500 hover:bg-red-500 hover:text-white px-3 py-1 rounded-md">
                       Logout

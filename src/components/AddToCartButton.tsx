@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { FiShoppingCart, FiPlus, FiMinus } from "react-icons/fi";
 import { addToCart, getCart, removeFromCart, updateCartItemQuantity } from "@/lib/actions/cart";
 import type { Product } from "@/lib/db/product_collection";
+import { isLoggedIn } from '@/lib/actions/users';
+import { swal } from '@/lib/utils/swal';
 
 interface AddToCartButtonProps {
   product: Product;
@@ -32,6 +34,14 @@ export default function AddToCartButton({ product, size = 'small' }: AddToCartBu
   }, [product._id]);
 
   const handleAddToCart = async () => {
+    if (!await isLoggedIn()) {
+      return swal({
+        title: 'Unauthenticated',
+        type: 'error',
+        message: 'You must be login to add product to the cart'
+      })
+    }
+
     setIsLoading(true);
     if (isInCart) {
       await updateCartItemQuantity(product._id.toString(), quantity + 1);
