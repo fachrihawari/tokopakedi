@@ -63,6 +63,36 @@ export const login = async (formData: FormData) => {
   redirect('/?' + successQuery);
 };
 
+export const googleLogin = async (authCode: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth/google-login`, {
+    method: 'POST',
+    cache: 'no-store',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ authCode }),
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    const errorQuery = setQueryParams({ type: 'error', title: "Login with Google Failed", message: "Please try again" });
+    redirect('/login?' + errorQuery);
+  }
+
+  // Set the token in a cookie
+  cookies().set('token', data.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 60 * 60 * 24 * 7, // 1 week
+    path: '/',
+  });
+
+  const successQuery = setQueryParams({ type: 'success', title: "Login Successful", message: "You have successfully logged in." });
+  redirect('/?' + successQuery);
+};
+
 export const logout = async () => {
   cookies().delete('token');
   revalidateTag('cart')

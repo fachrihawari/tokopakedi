@@ -1,9 +1,9 @@
 import TokoPakEdiLogo from '@/components/TokoPakEdiLogo';
 import { ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { FaEnvelope, FaLock, FaFacebook } from 'react-icons/fa';
-import { FcGoogle } from 'react-icons/fc';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { login } from '@/lib/actions/users';
+import GoogleLogin from '@/components/GoogleLogin';
 
 export const generateMetadata = async (_: {}, parentPromise: ResolvingMetadata) => {
   const parent = await parentPromise;
@@ -64,15 +64,8 @@ export default function LoginPage() {
           <span className="mx-4 text-sm text-gray-500">or login with</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
-        <div className="mt-6 flex space-x-4">
-          <button className="flex-1 flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-300">
-            <FcGoogle className="mr-2" size={20} />
-            <span className="text-sm font-medium">Google</span>
-          </button>
-          <button className="flex-1 flex items-center justify-center py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition duration-300">
-            <FaFacebook className="mr-2 text-blue-600" size={20} />
-            <span className="text-sm font-medium">Facebook</span>
-          </button>
+        <div className="mt-6">
+          <GoogleLogin />
         </div>
       </div>
       <div className="mt-8 text-center">

@@ -10,6 +10,8 @@ declare global {
       MIDTRANS_SERVER_KEY: string;
       MIDTRANS_CLIENT_KEY: string;
       NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: string;
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: string
+      GOOGLE_CLIENT_SECRET: string
     }
   }
 }
