@@ -17,7 +17,11 @@ export function useMidtrans({ onSuccess, onPending, onError, onClose }: Midtrans
     script.src = 'https://app.sandbox.midtrans.com/snap/snap.js'
     script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY)
 
-    script.onload = () => setIsReady(true)
+    script.onload = () => {
+      setTimeout(() => {
+        setIsReady(true)
+      }, 500); // make sure the script evaluation finished
+    }
     document.body.appendChild(script)
     return () => {
       document.body.removeChild(script)

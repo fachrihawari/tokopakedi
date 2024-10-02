@@ -6,5 +6,5 @@ export default function Error(props: { error: Error }) {
   console.log(props.error.message)
   console.log(props.error.stack)
 
-  return 'Ooppps'
+  return null
 }
