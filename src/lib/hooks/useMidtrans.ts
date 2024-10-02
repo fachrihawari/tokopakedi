@@ -33,7 +33,7 @@ export function useMidtrans({ onSuccess, onPending, onError, onClose }: Midtrans
       if (onClose) callbacks.onClose = onClose
       window.snap.pay(token, callbacks)
     }
-  }, [isReady, onSuccess, onPending, onError])
+  }, [isReady, onSuccess, onPending, onError, onClose])
 
   return { isReady, pay }
 }

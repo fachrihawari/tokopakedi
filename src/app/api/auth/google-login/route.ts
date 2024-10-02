@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { formatErrors } from "@/lib/utils/validator";
 import { z } from "zod";
-import { auth, OAuth2Client } from 'google-auth-library'
+import { OAuth2Client } from 'google-auth-library'
 import { usersCollection } from "@/lib/db/user_collection";
 import { cartsCollection } from "@/lib/db/cart_collection";
 import { signToken } from "@/lib/utils/jwt";
