@@ -21,6 +21,10 @@ TokoPakEdi is a modern e-commerce web application built with Next.js, React, and
 - [x] Order management
 - [x] Payment integration with Midtrans
 - [x] Google OAuth login
+- [ ] Product review and rating system
+- [ ] Admin panel for managing products
+- [ ] Admin panel for managing orders
+- [ ] Admin panel for managing sales reports
 
 ## Technologies Used
 - Next.js 14
