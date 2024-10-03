@@ -88,16 +88,22 @@ TokoPakEdi is a modern e-commerce web application built with Next.js, React, and
 ## API Routes
 
 The project uses Next.js API routes for server-side functionality:
-| Endpoint                    | Method(s)           | Description                                   |
-|-----------------------------|---------------------|-----------------------------------------------|
-| `/api/products`             | GET                 | Get products with pagination and filtering    |
-| `/api/products/facets`      | GET                 | Get product facets for filtering              |
-| `/api/products/latest`      | GET                 | Get latest products                           |
-| `/api/products/best-sellers`| GET                 | Get best-selling products                     |
-| `/api/products/[slug]`      | GET                 | Get a single product by slug                  |
-| `/api/cart`                 | GET, POST, PUT, DELETE | Manage shopping cart                       |
-| `/api/orders`               | GET, POST           | Manage orders                                 |
-| `/api/auth`                 | POST                | Handle authentication                         |
+
+| Endpoint                           | Method(s)      | Description                                          |
+|------------------------------------|-----------------|------------------------------------------------------|
+| `/api/products`                    | GET             | Get products with pagination and filtering           |
+| `/api/products/facets`             | GET             | Get product facets for filtering                     |
+| `/api/products/latest`             | GET             | Get latest products                                  |
+| `/api/products/best-sellers`       | GET             | Get best-selling products                            |
+| `/api/products/[slug]`             | GET             | Get a single product by slug or ID                   |
+| `/api/cart`                        | GET             | Get the current user's cart                          |
+| `/api/cart/[productId]`            | POST, PUT, DELETE | Add, update, or remove items from the cart         |
+| `/api/orders`                      | GET, POST       | Get user orders or create a new order                |
+| `/api/payment/notification`        | POST            | Handle payment notifications from Midtrans           |
+| `/api/auth/login`                  | POST            | Handle user login                                    |
+| `/api/auth/register`               | POST            | Handle user registration                             |
+| `/api/auth/google-login`           | POST            | Handle Google OAuth login                            |
+| `/api/heartbeat`                   | GET             | Health check endpoint                                |
 
 ## Deployment
 
