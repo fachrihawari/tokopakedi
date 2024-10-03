@@ -16,9 +16,11 @@ TokoPakEdi is a modern e-commerce web application built with Next.js, React, and
 - [ ] Responsive design for mobile and desktop
 - [x] Product browsing with search and filter functionality
 - [x] Product details page
-- [ ] User authentication (login and registration)
-- [ ] Shopping cart functionality
-- [ ] Admin panel for managing products (to be implemented)
+- [x] User authentication (login and registration)
+- [x] Shopping cart functionality
+- [x] Order management
+- [x] Payment integration with Midtrans
+- [x] Google OAuth login
 
 ## Technologies Used
 - Next.js 14
@@ -28,6 +30,8 @@ TokoPakEdi is a modern e-commerce web application built with Next.js, React, and
 - TypeScript
 - Docker for containerization
 - Bun as the JavaScript runtime
+- Midtrans for payment processing
+- Google OAuth for authentication
 
 ## Getting Started
 
@@ -50,33 +54,50 @@ TokoPakEdi is a modern e-commerce web application built with Next.js, React, and
    TOTAL_PRODUCTS=1000
    PORT=3000
    NEXT_PUBLIC_URL=http://localhost:3000
+   JWT_SECRET=your_jwt_secret
+   MIDTRANS_SERVER_KEY=your_midtrans_server_key
+   MIDTRANS_CLIENT_KEY=your_midtrans_client_key
+   NEXT_PUBLIC_MIDTRANS_CLIENT_KEY=your_midtrans_client_key
+   NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+   GOOGLE_CLIENT_SECRET=your_google_client_secret
    ```
 
-4. Run the development server:
+4. Run the database migration and seed:
+   ```bash
+   bun run migrate
+   bun run seed
+   ```
+
+5. Run the development server:
    ```bash
    bun run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Project Structure
 
 - `src/app`: Contains the main application pages and layouts
 - `src/components`: Reusable React components
-- `src/db`: Database connection and schema definitions
-- `src/actions`: Server actions for data fetching
-- `src/utils`: Utility functions
+- `src/lib/db`: Database connection and schema definitions
+- `src/lib/actions`: Server actions for data fetching and mutations
+- `src/lib/utils`: Utility functions
+- `src/lib/hooks`: Custom React hooks
 - `public`: Static assets
 
 ## API Routes
 
 The project uses Next.js API routes for server-side functionality:
-
-- `/api/products`: Get products with pagination and filtering
-- `/api/products/facets`: Get product facets for filtering
-- `/api/products/latest`: Get latest products
-- `/api/products/best-sellers`: Get best-selling products
-- `/api/products/[slug]`: Get a single product by slug
+| Endpoint                    | Method(s)           | Description                                   |
+|-----------------------------|---------------------|-----------------------------------------------|
+| `/api/products`             | GET                 | Get products with pagination and filtering    |
+| `/api/products/facets`      | GET                 | Get product facets for filtering              |
+| `/api/products/latest`      | GET                 | Get latest products                           |
+| `/api/products/best-sellers`| GET                 | Get best-selling products                     |
+| `/api/products/[slug]`      | GET                 | Get a single product by slug                  |
+| `/api/cart`                 | GET, POST, PUT, DELETE | Manage shopping cart                       |
+| `/api/orders`               | GET, POST           | Manage orders                                 |
+| `/api/auth`                 | POST                | Handle authentication                         |
 
 ## Deployment
 
