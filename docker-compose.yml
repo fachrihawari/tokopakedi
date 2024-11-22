@@ -5,19 +5,27 @@ services:
     expose:
       - ${PORT}
     environment:
-      PORT: ${PORT}
+      NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      MIDTRANS_SERVER_KEY: ${MIDTRANS_SERVER_KEY}
+      MIDTRANS_CLIENT_KEY: ${MIDTRANS_CLIENT_KEY}
       MONGO_URI: ${MONGO_URI}
       MONGO_DATABASE: ${MONGO_DATABASE}
+      NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: ${NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: ${NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+      PORT: ${PORT}
       TOTAL_PRODUCTS: ${TOTAL_PRODUCTS}
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tokopakedi.rule=Host(`tokopakedi.hawari.dev`)"
-      - "traefik.http.routers.tokopakedi.entrypoints=web"
+      - "traefik.http.routers.tokopakedi.entrypoints=websecure"
+      - "traefik.http.routers.tokopakedi.tls.certresolver=letsencryptresolver"
       - "traefik.http.services.tokopakedi.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
-      interval: 5s
+      start_period: 5s
+      interval: 3600s
       timeout: 5s
       retries: 5
     networks:
