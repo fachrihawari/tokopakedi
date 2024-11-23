@@ -24,7 +24,7 @@ services:
       - "traefik.http.services.tokopakedi.loadbalancer.server.port=${PORT}"
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:${PORT}/api/heartbeat"]
-      start_period: 5s
+      start_period: 60s
       interval: 3600s
       timeout: 5s
       retries: 5
